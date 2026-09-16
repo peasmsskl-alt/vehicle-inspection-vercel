@@ -2455,7 +2455,15 @@ document
 
 usageChanged();
 
-loadChecklist();
+const urlParams = new URLSearchParams(window.location.search);
+const qrPlate = urlParams.get("plate");
+
+if (qrPlate) {
+  document.getElementById("plate").value = qrPlate.trim();
+  loadVehicle();
+} else {
+  loadChecklist();
+}
 
 </script>
 
