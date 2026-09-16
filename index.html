@@ -646,6 +646,72 @@ textarea{
   font-size:16px;
   line-height:1.3;
 }
+
+  /* ===== ประเภทพาหนะ ===== */
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:10px;
+}
+
+.type-button{
+  min-height:145px;
+  padding:14px 8px;
+  border:2px solid #ddd2e8;
+  border-radius:20px;
+  background:#fff;
+  color:#555;
+  font-size:20px;
+  font-weight:700;
+  cursor:pointer;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  transition:.2s;
+}
+
+.type-button:hover{
+  border-color:#6b21a8;
+}
+
+.type-button.active{
+  background:#f2eafa;
+  border-color:#6b21a8;
+  color:#5b1894;
+}
+
+.type-button img{
+  width:65px;
+  height:55px;
+  object-fit:contain;
+  margin-bottom:8px;
+}
+
+.type-button span{
+  line-height:1.3;
+}
+
+/* มือถือ */
+@media(max-width:600px){
+  .type-grid{
+    gap:10px;
+  }
+
+  .type-button{
+    min-height:140px;
+    font-size:18px;
+    border-radius:18px;
+  }
+
+  .type-button img{
+    width:52px;
+    height:45px;
+  }
+}
   
 </style>
 </head>
@@ -756,50 +822,51 @@ textarea{
 
     <div class="field full">
 
-  <label class="title">
-    ประเภทรถ <span class="required">*</span>
-  </label>
+<label class="title">
+  ประเภทรถ <span class="required">*</span>
+</label>
 
-  <div class="type-grid">
+<div class="type-grid">
 
-    <button
-      class="type-button active"
-      data-type="รถยนต์"
-      onclick="selectVehicleType('รถยนต์',this)">
+  <button
+    type="button"
+    class="type-button active"
+    data-type="รถยนต์"
+    onclick="selectVehicleType('รถยนต์',this)">
 
-      <span class="vehicle-icon">🚗</span>
-      <span>รถยนต์</span>
+    <span style="font-size:45px;">🚗</span>
+    <span>รถยนต์</span>
 
-    </button>
-
-
-    <button
-      class="type-button"
-      data-type="รถยก"
-      onclick="selectVehicleType('รถยก',this)">
-
-      <span class="vehicle-icon">🚜</span>
-      <span>รถยก (Forklift)</span>
-
-    </button>
+  </button>
 
 
-    <button
-  type="button"
-  class="type-button"
-  data-type="รถเครน/กระเช้า"
-  onclick="selectVehicleType('รถเครน/กระเช้า',this)">
+  <button
+    type="button"
+    class="type-button"
+    data-type="รถยก"
+    onclick="selectVehicleType('รถยก',this)">
 
-  <img
-    src="https://www.svgrepo.com/show/237101/crane-truck.svg"
-    class="vehicle-img"
-    alt="รถเครน">
+    <span style="font-size:45px;">🚜</span>
+    <span>รถยก<br>(Forklift)</span>
 
-  <span>รถเครน/รถกระเช้า</span>
+  </button>
 
-</button>
 
-  </div>
+  <button
+    type="button"
+    class="type-button"
+    data-type="รถเครน/กระเช้า"
+    onclick="selectVehicleType('รถเครน/กระเช้า',this)">
+
+    <img
+      src="https://www.svgrepo.com/show/237101/crane-truck.svg"
+      alt="รถเครน">
+
+    <span>รถเครน/รถกระเช้า</span>
+
+  </button>
+
+</div>
 
 </div>
 
