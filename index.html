@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ระบบตรวจสอบยานพาหนะก่อนปฏิบัติงาน</title>
+
+<style>
+:root{
+  --purple:#5b198b;
+  --purple-light:#f1e9f7;
+  --purple-border:#d9c5e5;
+  --green:#168653;
+  --green-light:#e8f6ef;
+  --red:#dc3545;
+  --red-light:#fdebed;
+  --gray:#777;
+  --gray-light:#f1f1f1;
+  --bg:#f7f5f8;
+  --text:#28212d;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    "Noto Sans Thai",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  background:linear-gradient(
+    135deg,
+    #4b0874,
+    #70269e
+  );
+  color:white;
+  padding:22px 18px;
+  border-radius:0 0 25px 25px;
+  box-shadow:0 5px 18px rgba(75,8,116,.18);
+}
+
+.header h1{
+  margin:0;
+  font-size:21px;
+  font-weight:800;
+}
+
+.header p{
+  margin:6px 0 0;
+  font-size:13px;
+  opacity:.9;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs{
+  background:white;
+  margin:14px;
+  padding:6px;
+  border-radius:16px;
+  display:flex;
+  gap:6px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+
+.tab{
+  flex:1;
+  border:none;
+  background:white;
+  padding:11px;
+  border-radius:12px;
+  color:#777;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:var(--purple-light);
+  color:var(--purple);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  display:none;
+  padding:0 14px 35px;
+}
+
+.page.active{
+  display:block;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+  background:white;
+  border:1px solid #e5ddea;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:13px;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:13px;
+}
+
+.section-subtitle{
+  color:#777;
+  font-size:12px;
+  margin-top:-7px;
+  margin-bottom:13px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.field{
+  margin-bottom:5px;
+}
+
+.field.full{
+  grid-column:1 / -1;
+}
+
+label.title{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.required{
+  color:#d22;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  border:1px solid #dcd4e2;
+  border-radius:12px;
+  padding:12px;
+  font-size:15px;
+  background:white;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--purple);
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+/* =========================
+   VEHICLE TYPE
+========================= */
+
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.type-button{
+  border:1px solid var(--purple-border);
+  background:white;
+  color:#5c5263;
+  border-radius:12px;
+  padding:12px 5px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.type-button.active{
+  background:var(--purple-light);
+  border-color:var(--purple);
+  color:var(--purple);
+}
+
+/* =========================
+   RADIO CHOICES
+========================= */
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.choice{
+  border:1px solid #ddd5e2;
+  border-radius:12px;
+  padding:12px 8px;
+  text-align:center;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  background:white;
+}
+
+.choice input{
+  width:auto;
+  margin-right:5px;
+}
+
+.choice.selected{
+  background:var(--purple-light);
+  border-color:var(--purple);
+  color:var(--purple);
+}
+
+/* =========================
+   SHIFT
+========================= */
+
+.shift-box{
+  background:#fbf8fd;
+  border:1px solid var(--purple-border);
+  border-radius:14px;
+  padding:13px;
+}
+
+.shift-title{
+  color:var(--purple);
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:9px;
+}
+
+.shift-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+
+.shift{
+  border:1px solid #ddd5e2;
+  background:white;
+  border-radius:11px;
+  padding:10px 4px;
+  text-align:center;
+  font-size:12px;
+  font-weight:700;
+}
+
+.shift input{
+  width:auto;
+}
+
+/* =========================
+   VEHICLE INFO
+========================= */
+
+.vehicle-info{
+  background:#faf8fc;
+  border-radius:13px;
+  padding:12px;
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.vehicle-info strong{
+  color:var(--purple);
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-card{
+  background:white;
+  border:1px solid #e5ddea;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:13px;
+}
+
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.progress-bar{
+  width:100%;
+  height:9px;
+  background:#e8e3eb;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.progress-value{
+  height:100%;
+  width:0%;
+  background:var(--purple);
+  border-radius:99px;
+  transition:.25s;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:13px 0;
+}
+
+.summary-box{
+  background:white;
+  border:1px solid #e5ddea;
+  border-radius:14px;
+  padding:10px 5px;
+  text-align:center;
+}
+
+.summary-box .number{
+  font-size:22px;
+  font-weight:800;
+  display:block;
+}
+
+.summary-box .label{
+  font-size:10px;
+  color:#777;
+}
+
+.summary-box.good .number{
+  color:var(--green);
+}
+
+.summary-box.bad .number{
+  color:var(--red);
+}
+
+.summary-box.na .number{
+  color:#777;
+}
+
+/* =========================
+   PASS ALL
+========================= */
+
+.pass-all{
+  width:100%;
+  background:white;
+  border:1px solid var(--purple);
+  color:var(--purple);
+  border-radius:13px;
+  padding:12px;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* =========================
+   CHECKLIST
+========================= */
+
+.check-item{
+  background:white;
+  border:1px solid #e4dce8;
+  border-radius:17px;
+  padding:14px;
+  margin-bottom:10px;
+}
+
+.check-title{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  margin-bottom:12px;
+}
+
+.check-number{
+  width:28px;
+  height:28px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  background:var(--purple-light);
+  color:var(--purple);
+  border-radius:50%;
+  font-size:12px;
+  font-weight:800;
+}
+
+.check-name{
+  font-size:14px;
+  line-height:1.45;
+  font-weight:800;
+}
+
+.check-required{
+  display:inline-block;
+  background:#f2edf5;
+  color:var(--purple);
+  padding:2px 7px;
+  border-radius:7px;
+  font-size:10px;
+  margin-top:4px;
+}
+
+/* =========================
+   STATUS BUTTONS
+========================= */
+
+.status-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+}
+
+.status-button{
+  border:1px solid #ded7e2;
+  background:white;
+  border-radius:11px;
+  padding:11px 3px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.status-button.good.active{
+  background:var(--green-light);
+  border-color:var(--green);
+  color:var(--green);
+}
+
+.status-button.bad.active{
+  background:var(--red-light);
+  border-color:var(--red);
+  color:var(--red);
+}
+
+.status-button.na.active{
+  background:#eeeeee;
+  border-color:#888;
+  color:#666;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.save-button{
+  width:100%;
+  border:none;
+  background:var(--purple);
+  color:white;
+  border-radius:15px;
+  padding:15px;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+  margin-top:3px;
+}
+
+.save-button:active{
+  transform:scale(.99);
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-search{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.history-button{
+  width:100%;
+  border:none;
+  background:var(--purple);
+  color:white;
+  border-radius:13px;
+  padding:13px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.history-item{
+  background:white;
+  border:1px solid #e5ddea;
+  border-radius:15px;
+  padding:13px;
+  margin-bottom:9px;
+  line-height:1.8;
+  font-size:13px;
+}
+
+.history-status{
+  float:right;
+  padding:3px 8px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.history-status.good{
+  background:var(--green-light);
+  color:var(--green);
+}
+
+.history-status.bad{
+  background:var(--red-light);
+  color:var(--red);
+}
+
+.hidden{
+  display:none !important;
+}
+
+.notice{
+  background:#fff8e8;
+  border:1px solid #f0dfad;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:12px;
+  color:#65562e;
+  margin-bottom:12px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:550px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .type-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+  .history-search{
+    grid-template-columns:1fr;
+  }
+
+  .header h1{
+    font-size:19px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<header class="header">
+
+  <h1>
+    ระบบตรวจสอบยานพาหนะก่อนปฏิบัติงาน
+  </h1>
+
+  <p>
+    การตรวจสอบความพร้อมของยานพาหนะประจำวัน
+  </p>
+
+</header>
+
+
+<!-- ==================================================
+     TABS
+================================================== -->
+
+<div class="tabs">
+
+  <button
+    id="inspectTab"
+    class="tab active"
+    onclick="showTab('inspect')">
+
+    ✓ ตรวจสอบ
+
+  </button>
+
+  <button
+    id="historyTab"
+    class="tab"
+    onclick="showTab('history')">
+
+    ◷ ประวัติ
+
+  </button>
+
+</div>
+
+
+<!-- ==================================================
+     INSPECTION PAGE
+================================================== -->
+
+<section
+  id="inspectPage"
+  class="page active">
+
+
+<!-- ==================================================
+     VEHICLE INFORMATION
+================================================== -->
+
+<div class="card">
+
+  <div class="section-title">
+    ข้อมูลยานพาหนะ
+  </div>
+
+
+  <div class="grid">
+
+
+    <!-- เลขทะเบียน -->
+
+    <div class="field">
+
+      <label class="title">
+        เลขทะเบียน <span class="required">*</span>
+      </label>
+
+      <input
+        id="plate"
+        type="text"
+        placeholder="เช่น 80-1234"
+        autocomplete="off">
+
+    </div>
+
+
+    <!-- เลขไมล์ -->
+
+    <div class="field">
+
+      <label class="title">
+        เลขไมล์ <span class="required">*</span>
+      </label>
+
+      <input
+        id="mileage"
+        type="number"
+        min="0"
+        inputmode="numeric"
+        placeholder="เช่น 125430">
+
+    </div>
+
+
+    <!-- ประเภทรถ -->
+
+    <div class="field full">
+
+      <label class="title">
+        ประเภทรถ <span class="required">*</span>
+      </label>
+
+      <div class="type-grid">
+
+        <button
+          class="type-button active"
+          data-type="รถยนต์"
+          onclick="selectVehicleType('รถยนต์',this)">
+
+          🚗 รถยนต์
+
+        </button>
+
+
+        <button
+          class="type-button"
+          data-type="รถยก"
+          onclick="selectVehicleType('รถยก',this)">
+
+          🚜 รถยก
+
+        </button>
+
+
+        <button
+          class="type-button"
+          data-type="รถเครน/กระเช้า"
+          onclick="selectVehicleType('รถเครน/กระเช้า',this)">
+
+          🏗️ เครน/กระเช้า
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ลักษณะการใช้งาน -->
+
+    <div class="field full">
+
+      <label class="title">
+        ลักษณะการใช้งาน <span class="required">*</span>
+      </label>
+
+      <div class="choice-grid">
+
+
+        <label class="choice selected">
+
+          <input
+            type="radio"
+            name="usageType"
+            value="ใช้งานทั่วไป"
+            checked
+            onchange="usageChanged()">
+
+          ใช้งานทั่วไป
+
+        </label>
+
+
+        <label class="choice">
+
+          <input
+            type="radio"
+            name="usageType"
+            value="รถแก้กระแสไฟฟ้าขัดข้อง"
+            onchange="usageChanged()">
+
+          รถแก้กระแสไฟฟ้าขัดข้อง
+
+        </label>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- กะ -->
+
+    <div
+      id="shiftSection"
+      class="field full hidden">
+
+      <div class="shift-box">
+
+        <div class="shift-title">
+          กะการอยู่เวร <span class="required">*</span>
+        </div>
+
+        <div class="shift-grid">
+
+          <label class="shift">
+
+            <input
+              type="radio"
+              name="shift"
+              value="กะที่ 1">
+
+            กะที่ 1
+
+          </label>
+
+
+          <label class="shift">
+
+            <input
+              type="radio"
+              name="shift"
+              value="กะที่ 2">
+
+            กะที่ 2
+
+          </label>
+
+
+          <label class="shift">
+
+            <input
+              type="radio"
+              name="shift"
+              value="กะที่ 3">
+
+            กะที่ 3
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- หน่วยงาน -->
+
+    <div class="field">
+
+      <label class="title">
+        หน่วยงาน
+      </label>
+
+      <input
+        id="department"
+        type="text"
+        placeholder="หน่วยงาน">
+
+    </div>
+
+
+    <!-- รุ่น -->
+
+    <div class="field">
+
+      <label class="title">
+        ยี่ห้อ / รุ่น
+      </label>
+
+      <input
+        id="model"
+        type="text"
+        placeholder="ยี่ห้อ / รุ่น">
+
+    </div>
+
+
+    <!-- สถานะการใช้งาน -->
+
+    <div class="field">
+
+      <label class="title">
+        สถานะการใช้งาน <span class="required">*</span>
+      </label>
+
+      <select id="operatingStatus">
+
+        <option value="ใช้งาน">
+          ใช้งาน
+        </option>
+
+        <option value="ไม่ใช้งาน">
+          ไม่ใช้งาน
+        </option>
+
+        <option value="ส่งซ่อม">
+          ส่งซ่อม
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- วันที่ -->
+
+    <div class="field">
+
+      <label class="title">
+        วันที่ตรวจ <span class="required">*</span>
+      </label>
+
+      <input
+        id="inspectionDate"
+        type="date">
+
+    </div>
+
+
+    <!-- ผู้ตรวจ -->
+
+    <div class="field full">
+
+      <label class="title">
+        ผู้ตรวจ <span class="required">*</span>
+      </label>
+
+      <input
+        id="inspector"
+        type="text"
+        placeholder="กรอกชื่อผู้ตรวจ">
+
+    </div>
+
+  </div>
+
+
+  <!-- ข้อมูลรถจาก API -->
+
+  <div
+    id="vehicleInfo"
+    class="vehicle-info hidden">
+  </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     PROGRESS
+================================================== -->
+
+<div class="progress-card">
+
+  <div class="section-title">
+    รายการตรวจสอบ
+  </div>
+
+  <div class="notice">
+    ระบบจะโหลดรายการตรวจตามประเภทรถที่เลือก
+  </div>
+
+
+  <div class="progress-top">
+
+    <span>
+      ความคืบหน้า
+    </span>
+
+    <span id="progressText">
+      0 / 0
+    </span>
+
+  </div>
+
+
+  <div class="progress-bar">
+
+    <div
+      id="progressValue"
+      class="progress-value">
+    </div>
+
+  </div>
+
+
+  <div class="summary">
+
+
+    <div class="summary-box good">
+
+      <span
+        id="goodCount"
+        class="number">
+        0
+      </span>
+
+      <span class="label">
+        ปกติ / ผ่าน
+      </span>
+
+    </div>
+
+
+    <div class="summary-box bad">
+
+      <span
+        id="badCount"
+        class="number">
+        0
+      </span>
+
+      <span class="label">
+        ชำรุด / ไม่ผ่าน
+      </span>
+
+    </div>
+
+
+    <div class="summary-box na">
+
+      <span
+        id="naCount"
+        class="number">
+        0
+      </span>
+
+      <span class="label">
+        ไม่เกี่ยวข้อง
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+  <button
+    class="pass-all"
+    onclick="passAll()">
+
+    ✓ ผ่านทั้งหมด
+
+  </button>
+
+</div>
+
+
+
+<!-- ==================================================
+     CHECKLIST
+================================================== -->
+
+<div id="checklist">
+</div>
+
+
+
+<!-- ==================================================
+     NOTE
+================================================== -->
+
+<div class="card">
+
+  <div class="section-title">
+    หมายเหตุเพิ่มเติม
+  </div>
+
+  <textarea
+    id="notes"
+    placeholder="ระบุข้อบกพร่อง หรือรายละเอียดเพิ่มเติม..."></textarea>
+
+</div>
+
+
+
+<!-- ==================================================
+     SAVE
+================================================== -->
+
+<button
+  class="save-button"
+  onclick="saveInspection()">
+
+  บันทึกผลการตรวจ
+
+</button>
+
+</section>
+
+
+
+<!-- ==================================================
+     HISTORY PAGE
+================================================== -->
+
+<section
+  id="historyPage"
+  class="page">
+
+  <div class="card">
+
+    <div class="section-title">
+      ประวัติการตรวจ
+    </div>
+
+
+    <div class="history-search">
+
+
+      <div>
+
+        <label class="title">
+          เลขทะเบียน
+        </label>
+
+        <input
+          id="historyPlate"
+          type="text"
+          placeholder="ค้นหาทะเบียน">
+
+      </div>
+
+
+      <div>
+
+        <label class="title">
+          วันที่
+        </label>
+
+        <input
+          id="historyDate"
+          type="date">
+
+      </div>
+
+
+    </div>
+
+
+    <button
+      class="history-button"
+      onclick="loadHistory()">
+
+      ค้นหาประวัติ
+
+    </button>
+
+  </div>
+
+
+  <div id="historyList">
+  </div>
+
+</section>
+
+
+
+<script>
+
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let vehicleType = "รถยนต์";
+
+let checklistData = [];
+
+let results = {};
+
+
+/* ==================================================
+   INITIAL DATE
+================================================== */
+
+document.getElementById("inspectionDate").value =
+  new Date().toISOString().slice(0,10);
+
+
+/* ==================================================
+   TAB
+================================================== */
+
+function showTab(tab){
+
+  const inspect =
+    tab === "inspect";
+
+
+  document
+    .getElementById("inspectPage")
+    .classList.toggle("active",inspect);
+
+
+  document
+    .getElementById("historyPage")
+    .classList.toggle("active",!inspect);
+
+
+  document
+    .getElementById("inspectTab")
+    .classList.toggle("active",inspect);
+
+
+  document
+    .getElementById("historyTab")
+    .classList.toggle("active",!inspect);
+
+
+  if(!inspect){
+
+    loadHistory();
+
+  }
+
+}
+
+
+/* ==================================================
+   VEHICLE TYPE
+================================================== */
+
+function selectVehicleType(type,button){
+
+  vehicleType = type;
+
+
+  document
+    .querySelectorAll(".type-button")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+
+  button.classList.add("active");
+
+
+  loadChecklist();
+
+  loadVehicle();
+
+}
+
+
+/* ==================================================
+   USAGE
+================================================== */
+
+function usageChanged(){
+
+  const usage =
+    document.querySelector(
+      'input[name="usageType"]:checked'
+    )?.value;
+
+
+  document
+    .querySelectorAll(
+      'input[name="usageType"]'
+    )
+    .forEach(input=>{
+
+      input
+        .closest(".choice")
+        .classList.toggle(
+          "selected",
+          input.checked
+        );
+
+    });
+
+
+  document
+    .getElementById("shiftSection")
+    .classList.toggle(
+      "hidden",
+      usage !== "รถแก้กระแสไฟฟ้าขัดข้อง"
+    );
+
+}
+
+
+/* ==================================================
+   LOAD VEHICLE
+================================================== */
+
+async function loadVehicle(){
+
+  const plate =
+    document
+      .getElementById("plate")
+      .value
+      .trim();
+
+
+  if(!plate){
+    return;
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/vehicle?plate=" +
+        encodeURIComponent(plate)
+      );
+
+
+    if(!response.ok){
+      return;
+    }
+
+
+    const vehicle =
+      await response.json();
+
+
+    if(!vehicle){
+      return;
+    }
+
+
+    document
+      .getElementById("department")
+      .value =
+      vehicle.department || "";
+
+
+    document
+      .getElementById("model")
+      .value =
+      vehicle.model ||
+      vehicle.brandModel ||
+      "";
+
+
+    /*
+      ถ้าข้อมูลรถระบุประเภทไว้
+      ให้เลือกประเภทนั้นอัตโนมัติ
+    */
+
+    if(vehicle.type){
+
+      const button =
+        [
+          ...document.querySelectorAll(
+            ".type-button"
+          )
+        ].find(
+          x =>
+            x.dataset.type === vehicle.type
+        );
+
+
+      if(button){
+
+        selectVehicleType(
+          vehicle.type,
+          button
+        );
+
+      }
+
+    }
+
+
+    const info =
+      document.getElementById(
+        "vehicleInfo"
+      );
+
+
+    info.innerHTML = `
+
+      <strong>ข้อมูลรถ</strong><br>
+
+      เลขทะเบียน:
+      ${escapeHtml(
+        vehicle.plate || plate
+      )}
+
+      <br>
+
+      ประเภทรถ:
+      ${escapeHtml(
+        vehicle.type || vehicleType
+      )}
+
+      <br>
+
+      หน่วยงาน:
+      ${escapeHtml(
+        vehicle.department || "-"
+      )}
+
+      <br>
+
+      ยี่ห้อ / รุ่น:
+      ${escapeHtml(
+        vehicle.model ||
+        vehicle.brandModel ||
+        "-"
+      )}
+
+    `;
+
+
+    info.classList.remove("hidden");
+
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+
+/* ==================================================
+   LOAD CHECKLIST
+================================================== */
+
+async function loadChecklist(){
+
+  results = {};
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/checklist?type=" +
+        encodeURIComponent(vehicleType)
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "โหลดรายการตรวจไม่สำเร็จ"
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    checklistData =
+      Array.isArray(data)
+        ? data
+        : (
+            data.items ||
+            data.checklist ||
+            []
+          );
+
+
+  }catch(error){
+
+    /*
+      ถ้า API ยังไม่พร้อม
+      ระบบใช้รายการสำรองก่อน
+    */
+
+    checklistData =
+      getLocalChecklist(
+        vehicleType
+      );
+
+  }
+
+
+  renderChecklist();
+
+  updateSummary();
+
+}
+
+
+/* ==================================================
+   LOCAL CHECKLIST
+================================================== */
+
+function getLocalChecklist(type){
+
+
+  /* รถยก */
+
+  if(type === "รถยก"){
+
+    return [
+
+      "ระดับน้ำมันหล่อลื่นเครื่องยนต์",
+
+      "ระดับน้ำยาหล่อเย็นในหม้อน้ำสำรอง",
+
+      "ระดับน้ำมันไฮดรอลิกส์",
+
+      "ระดับน้ำมันหล่อลื่นห้องเกียร์",
+
+      "ระดับน้ำกลั่นแบตเตอรี่",
+
+      "สภาพยาง กระทะล้อ และน๊อตยึดล้อ",
+
+      "สภาพงาเหล็กยกของ แผงงา และการหลุดหลวม",
+
+      "ระดับน้ำมันเชื้อเพลิง",
+
+      "การทำงานของเกจวัดบนแผงหน้าปัทม์",
+
+      "การทำงานของระบบไฮดรอลิกส์และชุดงายก",
+
+      "การทำงานของระบบบังคับเลี้ยวและระบบเบรก",
+
+      "การทำงานของเครื่องยนต์และห้องเกียร์",
+
+      "ระบบไฟส่องสว่าง",
+
+      "การทำงานของแตร",
+
+      "ไฟสัญญาณ (ไฟวับวาบ,เลี้ยวซ้าย-ขวา,ถอยหลัง)",
+
+      "สัญญาณเสียงถอยหลัง",
+
+      "ตรวจสอบความตึงหย่อนของโซ่ขับเคลื่อนแผงงา"
+
+    ];
+
+  }
+
+
+  /* รถเครน / กระเช้า */
+
+  if(type === "รถเครน/กระเช้า"){
+
+    return [
+
+      "ระบบคอนโทรล (รั่วต่างๆ)",
+
+      "เกียร์ฝาก (รั่ว, เสียงดัง)",
+
+      "ปั๊มไฮดรอลิค (รั่ว, เสียงดัง)",
+
+      "สายไฮดรอลิค (บวม, แตก)",
+
+      "น้ำมันไฮดรอลิค (สภาพ, ระดับ)",
+
+      "สาย PTO, สายคันเร่ง (ขาด, ฝืด)",
+
+      "กระบอกหมุนเครน (การหมุน, บู๊ช)",
+
+      "เสาเครน (ลูกปืน, แอนตัว, การหมุน)",
+
+      "กระบอกขาข้างหน้า ซ้าย-ขวา",
+
+      "กระบอกขาข้างหลัง ซ้าย-ขวา",
+
+      "กระบอกยกบูม ใน-นอก",
+
+      "กระบอกยืดหด ใน-นอก",
+
+      "แผ่นรองเลื่อน (หาย, แตก, สึก)",
+
+      "ชุดวิ้นซ์-เบรควิ้นซ์ (รั่ว, เสียงดัง)",
+
+      "ลวดสลิง (แตก, การม้วนเก็บ)",
+
+      "รอก (ร่องสึก, แตก, เสียงดัง)",
+
+      "หัวเจาะ (รั่วชีล, รั่วสาย, เสียงดัง)",
+
+      "ฮุกมีตัวล๊อกสลิงกันหลุด",
+
+      "ไฟสัญญาณ (ไฟวับวาบ)",
+
+      "เกจชั่วโมง"
+
+    ];
+
+  }
+
+
+  /* รถยนต์ */
+
+  return [
+
+    "เข็มขัดนิรภัย",
+
+    "ไฟส่องสว่าง (สูง-ต่ำ) หน้า-หลัง",
+
+    "ไฟเบรก",
+
+    "ไฟสัญญาณ (ไฟวับวาบ,เลี้ยวซ้าย-ขวา,ถอยหลัง)",
+
+    "กระจกหน้ารถ",
+
+    "กระจกมองข้าง/หลัง",
+
+    "ที่ปัดน้ำฝน",
+
+    "น้ำฉีดกระจก",
+
+    "ระดับน้ำมันเชื้อเพลิง",
+
+    "ระดับน้ำมันหล่อลื่นเครื่องยนต์",
+
+    "การทำงานของแตร",
+
+    "ระบบเบรก (เบรกมือ/เบรกเท้า)",
+
+    "เครื่องปรับอากาศ",
+
+    "สภาพยาง กระทะล้อ และน๊อตยึดล้อ",
+
+    "อุปกรณ์ดับเพลิง",
+
+    "แบตเตอรี่ (ขั้ว, น้ำกลั่น)",
+
+    "ทำความสะอาดด้านในและด้านนอก",
+
+    "ความเสียหายภายใน",
+
+    "ความเสียหายภายนอก"
+
+  ];
+
+}
+
+
+/* ==================================================
+   NORMALIZE
+================================================== */
+
+function normalizeItem(item,index){
+
+  if(typeof item === "string"){
+
+    return {
+
+      id:index + 1,
+
+      name:item,
+
+      required:true
+
+    };
+
+  }
+
+
+  return {
+
+    id:
+      item.id ??
+      index + 1,
+
+    name:
+      item.name ||
+      item.title ||
+      item.item ||
+      "",
+
+    required:
+      item.required !== false
+
+  };
+
+}
+
+
+/* ==================================================
+   RENDER CHECKLIST
+================================================== */
+
+function renderChecklist(){
+
+  const container =
+    document.getElementById(
+      "checklist"
+    );
+
+
+  container.innerHTML =
+    checklistData
+      .map((item,index)=>{
+
+        const data =
+          normalizeItem(
+            item,
+            index
+          );
+
+
+        const value =
+          results[data.id] || "";
+
+
+        return `
+
+        <div class="check-item">
+
+          <div class="check-title">
+
+            <div class="check-number">
+              ${index + 1}
+            </div>
+
+            <div>
+
+              <div class="check-name">
+                ${escapeHtml(
+                  data.name
+                )}
+              </div>
+
+              ${
+                data.required
+                ?
+                `
+                <span class="check-required">
+                  จำเป็น
+                </span>
+                `
+                :
+                ""
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="status-grid">
+
+
+            <button
+              class="
+                status-button
+                good
+                ${value === "ผ่าน" ? "active" : ""}
+              "
+              onclick="
+                setResult(
+                  ${JSON.stringify(data.id)},
+                  'ผ่าน'
+                )
+              ">
+
+              ✓ ผ่าน
+
+            </button>
+
+
+            <button
+              class="
+                status-button
+                bad
+                ${value === "ไม่ผ่าน" ? "active" : ""}
+              "
+              onclick="
+                setResult(
+                  ${JSON.stringify(data.id)},
+                  'ไม่ผ่าน'
+                )
+              ">
+
+              ✕ ไม่ผ่าน
+
+            </button>
+
+
+            <button
+              class="
+                status-button
+                na
+                ${value === "ไม่เกี่ยวข้อง" ? "active" : ""}
+              "
+              onclick="
+                setResult(
+                  ${JSON.stringify(data.id)},
+                  'ไม่เกี่ยวข้อง'
+                )
+              ">
+
+              ⊖ ไม่เกี่ยวข้อง
+
+            </button>
+
+
+          </div>
+
+        </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* ==================================================
+   RESULT
+================================================== */
+
+function setResult(id,value){
+
+  results[id] = value;
+
+  renderChecklist();
+
+  updateSummary();
+
+}
+
+
+/* ==================================================
+   SUMMARY
+================================================== */
+
+function updateSummary(){
+
+  const values =
+    Object.values(results);
+
+
+  const total =
+    checklistData.length;
+
+
+  const good =
+    values.filter(
+      x => x === "ผ่าน"
+    ).length;
+
+
+  const bad =
+    values.filter(
+      x => x === "ไม่ผ่าน"
+    ).length;
+
+
+  const na =
+    values.filter(
+      x => x === "ไม่เกี่ยวข้อง"
+    ).length;
+
+
+  document
+    .getElementById("goodCount")
+    .textContent = good;
+
+
+  document
+    .getElementById("badCount")
+    .textContent = bad;
+
+
+  document
+    .getElementById("naCount")
+    .textContent = na;
+
+
+  document
+    .getElementById("progressText")
+    .textContent =
+      values.length +
+      " / " +
+      total;
+
+
+  const percent =
+    total > 0
+      ? (values.length / total) * 100
+      : 0;
+
+
+  document
+    .getElementById("progressValue")
+    .style.width =
+      percent + "%";
+
+}
+
+
+/* ==================================================
+   PASS ALL
+================================================== */
+
+function passAll(){
+
+  checklistData.forEach(
+    (item,index)=>{
+
+      const data =
+        normalizeItem(
+          item,
+          index
+        );
+
+      results[data.id] =
+        "ผ่าน";
+
+    }
+  );
+
+
+  renderChecklist();
+
+  updateSummary();
+
+}
+
+
+/* ==================================================
+   SAVE
+================================================== */
+
+async function saveInspection(){
+
+  const plate =
+    document
+      .getElementById("plate")
+      .value
+      .trim();
+
+
+  const mileage =
+    document
+      .getElementById("mileage")
+      .value;
+
+
+  const inspector =
+    document
+      .getElementById("inspector")
+      .value
+      .trim();
+
+
+  const inspectionDate =
+    document
+      .getElementById("inspectionDate")
+      .value;
+
+
+  const usageType =
+    document
+      .querySelector(
+        'input[name="usageType"]:checked'
+      )?.value || "";
+
+
+  const shift =
+    document
+      .querySelector(
+        'input[name="shift"]:checked'
+      )?.value || "";
+
+
+  const operatingStatus =
+    document
+      .getElementById(
+        "operatingStatus"
+      )
+      .value;
+
+
+  const department =
+    document
+      .getElementById(
+        "department"
+      )
+      .value
+      .trim();
+
+
+  const model =
+    document
+      .getElementById(
+        "model"
+      )
+      .value
+      .trim();
+
+
+  const notes =
+    document
+      .getElementById(
+        "notes"
+      )
+      .value;
+
+
+  /* ตรวจข้อมูล */
+
+  if(
+    !plate ||
+    !mileage ||
+    !inspector ||
+    !inspectionDate
+  ){
+
+    alert(
+      "กรุณากรอก เลขทะเบียน เลขไมล์ ผู้ตรวจ และวันที่ตรวจ ให้ครบ"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    usageType ===
+    "รถแก้กระแสไฟฟ้าขัดข้อง" &&
+    !shift
+  ){
+
+    alert(
+      "กรุณาเลือกกะการอยู่เวร"
+    );
+
+    return;
+
+  }
+
+
+  const incomplete =
+    checklistData.some(
+      (item,index)=>{
+
+        const data =
+          normalizeItem(
+            item,
+            index
+          );
+
+        return !results[data.id];
+
+      }
+    );
+
+
+  if(
+    incomplete &&
+    !confirm(
+      "ยังมีรายการที่ไม่ได้เลือกผลตรวจ ต้องการบันทึกต่อหรือไม่?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  /* เตรียมข้อมูล */
+
+  const payload = {
+
+    plate:plate,
+
+    mileage:Number(
+      mileage
+    ),
+
+    type:vehicleType,
+
+    usageType:usageType,
+
+    shift:shift,
+
+    operatingStatus:
+      operatingStatus,
+
+    department:
+      department,
+
+    model:model,
+
+    inspector:
+      inspector,
+
+    date:
+      inspectionDate,
+
+    notes:
+      notes,
+
+    results:
+      checklistData.map(
+        (item,index)=>{
+
+          const data =
+            normalizeItem(
+              item,
+              index
+            );
+
+          return {
+
+            id:data.id,
+
+            name:data.name,
+
+            result:
+              results[data.id] ||
+              ""
+
+          };
+
+        }
+      )
+
+  };
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/inspection",
+        {
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(
+              payload
+            )
+
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "บันทึกไม่สำเร็จ"
+      );
+
+    }
+
+
+    alert(
+      "บันทึกผลการตรวจเรียบร้อยแล้ว"
+    );
+
+
+    results = {};
+
+    document
+      .getElementById("notes")
+      .value = "";
+
+
+    renderChecklist();
+
+    updateSummary();
+
+
+  }catch(error){
+
+    alert(
+      "เกิดข้อผิดพลาดในการบันทึก: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   HISTORY
+================================================== */
+
+async function loadHistory(){
+
+  const plate =
+    document
+      .getElementById(
+        "historyPlate"
+      )
+      .value
+      .trim();
+
+
+  const date =
+    document
+      .getElementById(
+        "historyDate"
+      )
+      .value;
+
+
+  const container =
+    document.getElementById(
+      "historyList"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="card">
+      กำลังโหลดประวัติ...
+    </div>
+
+  `;
+
+
+  try{
+
+    const params =
+      new URLSearchParams();
+
+
+    if(plate){
+      params.set(
+        "plate",
+        plate
+      );
+    }
+
+
+    if(date){
+      params.set(
+        "date",
+        date
+      );
+    }
+
+
+    const response =
+      await fetch(
+        "/api/history?" +
+        params.toString()
+      );
+
+
+    if(!response.ok){
+
+      throw new Error();
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    const rows =
+      Array.isArray(data)
+        ? data
+        : (
+            data.items ||
+            data.history ||
+            []
+          );
+
+
+    if(!rows.length){
+
+      container.innerHTML = `
+
+        <div class="card">
+          ยังไม่มีประวัติการตรวจ
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      rows
+        .map(item=>{
+
+          const bad =
+            Number(
+              item.badCount || 0
+            ) > 0;
+
+
+          return `
+
+          <div class="history-item">
+
+            <span
+              class="
+                history-status
+                ${bad ? "bad" : "good"}
+              ">
+
+              ${bad
+                ? "ไม่ผ่าน"
+                : "ผ่าน"}
+
+            </span>
+
+
+            <strong>
+              ทะเบียน:
+              ${escapeHtml(
+                item.plate || "-"
+              )}
+            </strong>
+
+            <br>
+
+            วันที่:
+            ${escapeHtml(
+              item.date ||
+              item.inspectionDate ||
+              "-"
+            )}
+
+            <br>
+
+            ประเภทรถ:
+            ${escapeHtml(
+              item.type || "-"
+            )}
+
+            <br>
+
+            ลักษณะการใช้งาน:
+            ${escapeHtml(
+              item.usageType || "-"
+            )}
+
+            <br>
+
+            ${
+              item.shift
+              ?
+              `
+              กะ:
+              ${escapeHtml(
+                item.shift
+              )}
+              <br>
+              `
+              :
+              ""
+            }
+
+            เลขไมล์:
+            ${escapeHtml(
+              String(
+                item.mileage ??
+                "-"
+              )
+            )}
+
+            <br>
+
+            ผู้ตรวจ:
+            ${escapeHtml(
+              item.inspector ||
+              "-"
+            )}
+
+          </div>
+
+          `;
+
+        })
+        .join("");
+
+
+  }catch(error){
+
+    container.innerHTML = `
+
+      <div class="card">
+
+        ไม่สามารถโหลดประวัติได้
+        กรุณาตรวจสอบ API
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+================================================== */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  ).replace(
+    /[&<>"']/g,
+    function(char){
+
+      return {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+
+      }[char];
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   PLATE CHANGE
+================================================== */
+
+document
+  .getElementById("plate")
+  .addEventListener(
+    "change",
+    loadVehicle
+  );
+
+
+document
+  .getElementById("plate")
+  .addEventListener(
+    "blur",
+    loadVehicle
+  );
+
+
+/* ==================================================
+   START
+================================================== */
+
+usageChanged();
+
+loadChecklist();
+
+</script>
+
+</body>
+</html>

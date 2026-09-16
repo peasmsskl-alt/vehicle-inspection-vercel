@@ -1,0 +1,2 @@
+const {getValues}=require('../lib/sheets');
+export default async function handler(req,res){try{const plate=String(req.query.plate||'').trim(),rows=await getValues('Inspections!A:K');const items=rows.slice(1).reverse().filter(r=>!plate||String(r[2]||'').trim()===plate).slice(0,100).map(r=>({timestamp:r[0]||'',date:r[1]||'',plate:r[2]||'',type:r[3]||'',department:r[4]||'',model:r[5]||'',inspector:r[6]||'',status:r[7]||'',defectCount:Number(r[8]||0),notes:r[9]||''}));res.status(200).json({success:true,items});}catch(e){res.status(500).json({success:false,message:e.message});}}
