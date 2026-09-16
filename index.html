@@ -569,7 +569,34 @@ textarea{
 /* =========================
    MOBILE
 ========================= */
+/* ลักษณะการใช้งานแบบกระชับ */
 
+.choice-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.choice{
+  min-height:48px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid #ddd5e2;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:700;
+  background:white;
+}
+
+.choice input{
+  width:18px;
+  height:18px;
+  margin:0;
+  flex:none;
+}
 @media(max-width:550px){
 
   .grid{
@@ -585,7 +612,7 @@ textarea{
   }
 
   .choice-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr 1fr;
   }
 
   .history-search{
@@ -597,6 +624,12 @@ textarea{
   }
 
 }
+.vehicle-img{
+  width:55px;
+  height:45px;
+  object-fit:contain;
+}
+  
 </style>
 </head>
 
@@ -674,14 +707,12 @@ textarea{
     <div class="field">
 
       <label class="title">
-        เลขทะเบียน <span class="required">*</span>
-      </label>
+  เลขทะเบียน <span class="required">*</span>
+</label>
 
-      <input
-        id="plate"
-        type="text"
-        placeholder="เช่น 80-1234"
-        autocomplete="off">
+<select id="plate" onchange="loadVehicle()">
+  <option value="">-- เลือกเลขทะเบียน --</option>
+</select>
 
     </div>
 
@@ -708,45 +739,52 @@ textarea{
 
     <div class="field full">
 
-      <label class="title">
-        ประเภทรถ <span class="required">*</span>
-      </label>
+  <label class="title">
+    ประเภทรถ <span class="required">*</span>
+  </label>
 
-      <div class="type-grid">
+  <div class="type-grid">
 
-        <button
-          class="type-button active"
-          data-type="รถยนต์"
-          onclick="selectVehicleType('รถยนต์',this)">
+    <button
+      class="type-button active"
+      data-type="รถยนต์"
+      onclick="selectVehicleType('รถยนต์',this)">
 
-          🚗 รถยนต์
+      <span class="vehicle-icon">🚗</span>
+      <span>รถยนต์</span>
 
-        </button>
-
-
-        <button
-          class="type-button"
-          data-type="รถยก"
-          onclick="selectVehicleType('รถยก',this)">
-
-          🚜 รถยก
-
-        </button>
+    </button>
 
 
-        <button
-          class="type-button"
-          data-type="รถเครน/กระเช้า"
-          onclick="selectVehicleType('รถเครน/กระเช้า',this)">
+    <button
+      class="type-button"
+      data-type="รถยก"
+      onclick="selectVehicleType('รถยก',this)">
 
-          🏗️ เครน/กระเช้า
+      <span class="vehicle-icon">🚜</span>
+      <span>รถยก (Forklift)</span>
 
-        </button>
+    </button>
 
-      </div>
 
-    </div>
+    <button
+  type="button"
+  class="type-button"
+  data-type="รถเครน/กระเช้า"
+  onclick="selectVehicleType('รถเครน/กระเช้า',this)">
 
+  <img
+    src="https://www.svgrepo.com/show/237101/crane-truck.svg"
+    class="vehicle-img"
+    alt="รถเครน">
+
+  <span>รถเครน/รถกระเช้า</span>
+
+</button>
+
+  </div>
+
+</div>
 
     <!-- ลักษณะการใช้งาน -->
 
@@ -863,23 +901,7 @@ textarea{
     </div>
 
 
-    <!-- รุ่น -->
-
-    <div class="field">
-
-      <label class="title">
-        ยี่ห้อ / รุ่น
-      </label>
-
-      <input
-        id="model"
-        type="text"
-        placeholder="ยี่ห้อ / รุ่น">
-
-    </div>
-
-
-    <!-- สถานะการใช้งาน -->
+   <!-- สถานะการใช้งาน -->
 
     <div class="field">
 
@@ -929,10 +951,15 @@ textarea{
         ผู้ตรวจ <span class="required">*</span>
       </label>
 
-      <input
-        id="inspector"
-        type="text"
-        placeholder="กรอกชื่อผู้ตรวจ">
+      <select id="inspector">
+  <option value="">-- เลือกผู้ตรวจ --</option>
+
+  <option value="ผู้ตรวจ 1">ผู้ตรวจ 1</option>
+  <option value="ผู้ตรวจ 2">ผู้ตรวจ 2</option>
+  <option value="ผู้ตรวจ 3">ผู้ตรวจ 3</option>
+  <option value="ผู้ตรวจ 4">ผู้ตรวจ 4</option>
+
+</select>
 
     </div>
 
