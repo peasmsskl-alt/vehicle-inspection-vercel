@@ -712,6 +712,13 @@ textarea{
     height:45px;
   }
 }
+  .vehicle-img{
+  width:100px;
+  height:60px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 5px;
+}
   
 </style>
 </head>
@@ -841,15 +848,18 @@ textarea{
 
 
   <button
-    type="button"
-    class="type-button"
-    data-type="รถยก"
-    onclick="selectVehicleType('รถยก',this)">
+  type="button"
+  class="type-button"
+  data-type="รถยก"
+  onclick="selectVehicleType('รถยก',this)">
 
-    <span style="font-size:45px;">🚜</span>
-    <span>รถยก<br>(Forklift)</span>
+  <img
+    src="https://www.kindpng.com/picc/m/714-7146633_heli-6-8-10t-diesel-counterbalanced-forklift-truck.png"
+    class="vehicle-img"
+    alt="รถยก">
 
-  </button>
+  <span>รถยก (Forklift)</span>
+</button>
 
 
   <button
