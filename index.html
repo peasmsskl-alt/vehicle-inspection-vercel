@@ -624,6 +624,12 @@ textarea{
   }
 
 }
+.type-button:disabled,
+select:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
 .vehicle-img{
   width:42px;
   height:35px;
@@ -800,8 +806,8 @@ textarea{
   เลขทะเบียน <span class="required">*</span>
 </label>
 
-<select id="plate" onchange="loadVehicle()">
-  <option value="">-- เลือกเลขทะเบียน --</option>
+<select id="plate" onchange="loadVehicle()" disabled>
+  <option value="">-- กรุณาเลือกประเภทรถก่อน --</option>
 </select>
 
     </div>
@@ -837,7 +843,7 @@ textarea{
 
   <button
     type="button"
-    class="type-button active"
+    class="type-button"
     data-type="รถยนต์"
     onclick="selectVehicleType('รถยนต์',this)">
 
@@ -858,18 +864,19 @@ textarea{
     class="vehicle-img"
     alt="รถยก">
 
-  <span>รถยก (Forklift)</span>
+  <span>รถยก</span>
 </button>
 
 
   <button
     type="button"
     class="type-button"
-    data-type="รถเครน/กระเช้า"
-    onclick="selectVehicleType('รถเครน/กระเช้า',this)">
+    data-type="รถเครน/รถกระเช้า"
+    onclick="selectVehicleType('รถเครน/รถกระเช้า',this)">
 
     <img
       src="https://www.svgrepo.com/show/237101/crane-truck.svg"
+      class="vehicle-img"
       alt="รถเครน">
 
     <span>รถเครน/รถกระเช้า</span>
@@ -896,11 +903,11 @@ textarea{
           <input
             type="radio"
             name="usageType"
-            value="ใช้งานทั่วไป"
+            value="งานทั่วไป"
             checked
             onchange="usageChanged()">
 
-          ใช้งานทั่วไป
+          งานทั่วไป
 
         </label>
 
@@ -910,10 +917,10 @@ textarea{
           <input
             type="radio"
             name="usageType"
-            value="รถแก้กระแสไฟฟ้าขัดข้อง"
+            value="งานแก้กระแสไฟฟ้าขัดข้อง"
             onchange="usageChanged()">
 
-          รถแก้กระแสไฟฟ้าขัดข้อง
+          งานแก้กระแสไฟฟ้าขัดข้อง
 
         </label>
 
@@ -977,24 +984,6 @@ textarea{
       </div>
 
     </div>
-
-
-    <!-- หน่วยงาน -->
-
-    <div class="field">
-
-      <label class="title">
-        หน่วยงาน
-      </label>
-
-      <input
-        id="department"
-        type="text"
-        placeholder="หน่วยงาน">
-
-    </div>
-
-
    <!-- สถานะการใช้งาน -->
 
     <div class="field">
@@ -1045,14 +1034,8 @@ textarea{
         ผู้ตรวจ <span class="required">*</span>
       </label>
 
-      <select id="inspector">
-  <option value="">-- เลือกผู้ตรวจ --</option>
-
-  <option value="ผู้ตรวจ 1">ผู้ตรวจ 1</option>
-  <option value="ผู้ตรวจ 2">ผู้ตรวจ 2</option>
-  <option value="ผู้ตรวจ 3">ผู้ตรวจ 3</option>
-  <option value="ผู้ตรวจ 4">ผู้ตรวจ 4</option>
-
+      <select id="inspector" disabled>
+  <option value="">-- กรุณาเลือกประเภทรถก่อน --</option>
 </select>
 
     </div>
@@ -1287,7 +1270,7 @@ textarea{
    VARIABLES
 ================================================== */
 
-let vehicleType = "รถยนต์";
+let vehicleType = "";
 
 let checklistData = [];
 
@@ -1349,21 +1332,32 @@ function selectVehicleType(type,button){
 
   vehicleType = type;
 
-
   document
     .querySelectorAll(".type-button")
     .forEach(btn=>{
       btn.classList.remove("active");
     });
 
-
   button.classList.add("active");
 
+  // เมื่อเลือกประเภทรถแล้ว จึงเปิดให้เลือกทะเบียนและผู้ตรวจ
+  const plateSelect = document.getElementById("plate");
+  const inspectorSelect = document.getElementById("inspector");
 
+  plateSelect.disabled = false;
+  inspectorSelect.disabled = false;
+
+  // ล้างข้อมูลเดิม
+  plateSelect.value = "";
+  inspectorSelect.value = "";
+
+  document.getElementById("vehicleInfo").classList.add("hidden");
+  document.getElementById("vehicleInfo").innerHTML = "";
+
+  // โหลดรายการตามประเภทรถ
   loadChecklist();
-
-  loadVehicle();
-
+  loadVehiclePlates(type);
+  loadInspectors(type);
 }
 
 
@@ -1399,9 +1393,151 @@ function usageChanged(){
     .getElementById("shiftSection")
     .classList.toggle(
       "hidden",
-      usage !== "รถแก้กระแสไฟฟ้าขัดข้อง"
+      usage !== "งานแก้กระแสไฟฟ้าขัดข้อง"
     );
 
+}
+
+
+/* ==================================================
+   รายชื่อผู้ตรวจตามประเภทรถ
+================================================== */
+
+const inspectorLists = {
+
+  "รถยนต์":[
+    "นาย ศุภวิชญ์ ชูทอง",
+    "นาย ศุภณัฐฎ์ ต้นวิพัฒน์",
+    "นาย วิชัย สวัสดีรักษา",
+    "นาย ธีระพงศ์ สุระวี",
+    "นาย มานะ ต่วนสกุล",
+    "นาย พูนสุข ต่วนสกุล",
+    "นาย พินิจ ต่วนสกุล",
+    "นาย กฤษณะ เจ๊ะสว่าง",
+    "นาย สุริยัน กลสามัญ",
+    "นาย ปัญญา คงทอง",
+    "นาย สิริ อินเอียด",
+    "นาย นพปฏูล รักษ์เพ็ชร",
+    "นาย มนตรี รัตนเสถียร",
+    "นาย คณิศร ศักดิ์ยิ่งยง",
+    "นาย ธงชัย ชัยสุริยา",
+    "นาย ศุภณัฐ ต้นวิพัฒน์",
+    "นาย เกรียงศักดิ์ สุวรรณรัตน์",
+    "นาย เจตศักดา ขาวปั้น"
+  ],
+
+  "รถยก":[
+    "นาย ชาริติ สุวรรณรัตน์",
+    "นาย สำราญ จินดารัตน์",
+    "นาย กอบบุญ เกื้อเพ็ชร"
+  ],
+
+  "รถเครน/รถกระเช้า":[
+    "นาย ทินกร เบ็ญจพร",
+    "นายสุทัน ชัยสุริยา",
+    "นาย สุริยัน กลสามัญ",
+    "นาย ศาตรา หนูทอง",
+    "นาย วิชาญ ศรีไชย",
+    "นาย บุญโฉม ศรีรักษา"
+  ]
+
+};
+
+function loadInspectors(type){
+
+  const select = document.getElementById("inspector");
+  if(!select) return;
+
+  const names = inspectorLists[type] || [];
+
+  select.innerHTML =
+    '<option value="">-- เลือกผู้ตรวจ --</option>' +
+    names
+      .map(name =>
+        `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`
+      )
+      .join("");
+
+  select.disabled = !type;
+}
+
+
+/* ==================================================
+   โหลดเลขทะเบียนตามประเภทรถ
+================================================== */
+
+async function loadVehiclePlates(type, selectedPlate = ""){
+
+  const select = document.getElementById("plate");
+  if(!select) return;
+
+  if(!type){
+    select.disabled = true;
+    select.innerHTML =
+      '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
+    return;
+  }
+
+  select.disabled = false;
+  select.innerHTML =
+    '<option value="">กำลังโหลดทะเบียน...</option>';
+
+  try{
+
+    const response = await fetch(
+      "/api/vehicle?type=" + encodeURIComponent(type)
+    );
+
+    if(!response.ok){
+      throw new Error("โหลดทะเบียนไม่สำเร็จ");
+    }
+
+    const data = await response.json();
+
+    const vehicles =
+      Array.isArray(data)
+        ? data
+        : (data.vehicles || []);
+
+    // แสดงเลขทะเบียนไม่ซ้ำ
+    const seen = new Set();
+
+    select.innerHTML =
+      '<option value="">-- เลือกเลขทะเบียน --</option>';
+
+    vehicles.forEach(vehicle => {
+
+      const plate =
+        String(vehicle.plate || "").trim();
+
+      if(!plate || seen.has(plate)) return;
+
+      seen.add(plate);
+
+      const option = document.createElement("option");
+      option.value = plate;
+      option.textContent = plate;
+
+      select.appendChild(option);
+    });
+
+    if(selectedPlate){
+      const wanted = String(selectedPlate).trim();
+      const found = [...select.options]
+        .find(option => option.value === wanted);
+
+      if(found){
+        select.value = found.value;
+      }
+    }
+
+  }catch(error){
+
+    console.log(error);
+
+    select.innerHTML =
+      '<option value="">-- โหลดทะเบียนไม่สำเร็จ --</option>';
+  }
 }
 
 
@@ -1412,134 +1548,56 @@ function usageChanged(){
 async function loadVehicle(){
 
   const plate =
-    document
-      .getElementById("plate")
-      .value
-      .trim();
+    document.getElementById("plate").value.trim();
 
-
-  if(!plate){
+  if(!plate || !vehicleType){
+    document.getElementById("vehicleInfo").classList.add("hidden");
     return;
   }
 
-
   try{
 
-    const response =
-      await fetch(
-        "/api/vehicle?plate=" +
-        encodeURIComponent(plate)
-      );
-
+    const response = await fetch(
+      "/api/vehicle?plate=" + encodeURIComponent(plate)
+    );
 
     if(!response.ok){
-      return;
+      throw new Error("ไม่พบข้อมูลรถ");
     }
 
-
-    const vehicle =
-      await response.json();
-
+    const data = await response.json();
+    const vehicle = data.vehicle || data;
 
     if(!vehicle){
+      throw new Error("ไม่พบข้อมูลรถ");
+    }
+
+    // ป้องกันทะเบียนผิดประเภท
+    if(
+      vehicle.type &&
+      String(vehicle.type).trim() !== String(vehicleType).trim()
+    ){
+      alert("ทะเบียนนี้ไม่ใช่ประเภทรถที่เลือก");
+      document.getElementById("plate").value = "";
       return;
     }
 
-
-    document
-      .getElementById("department")
-      .value =
-      vehicle.department || "";
-
-
-    document
-      .getElementById("model")
-      .value =
-      vehicle.model ||
-      vehicle.brandModel ||
-      "";
-
-
-    /*
-      ถ้าข้อมูลรถระบุประเภทไว้
-      ให้เลือกประเภทนั้นอัตโนมัติ
-    */
-
-    if(vehicle.type){
-
-      const button =
-        [
-          ...document.querySelectorAll(
-            ".type-button"
-          )
-        ].find(
-          x =>
-            x.dataset.type === vehicle.type
-        );
-
-
-      if(button){
-
-        selectVehicleType(
-          vehicle.type,
-          button
-        );
-
-      }
-
-    }
-
-
-    const info =
-      document.getElementById(
-        "vehicleInfo"
-      );
-
+    const info = document.getElementById("vehicleInfo");
 
     info.innerHTML = `
-
       <strong>ข้อมูลรถ</strong><br>
-
-      เลขทะเบียน:
-      ${escapeHtml(
-        vehicle.plate || plate
-      )}
-
-      <br>
-
-      ประเภทรถ:
-      ${escapeHtml(
-        vehicle.type || vehicleType
-      )}
-
-      <br>
-
-      หน่วยงาน:
-      ${escapeHtml(
-        vehicle.department || "-"
-      )}
-
-      <br>
-
-      ยี่ห้อ / รุ่น:
-      ${escapeHtml(
-        vehicle.model ||
-        vehicle.brandModel ||
-        "-"
-      )}
-
+      เลขทะเบียน: ${escapeHtml(vehicle.plate || plate)}<br>
+      ประเภทรถ: ${escapeHtml(vehicle.type || vehicleType)}
     `;
 
-
     info.classList.remove("hidden");
-
 
   }catch(error){
 
     console.log(error);
 
+    document.getElementById("vehicleInfo").classList.add("hidden");
   }
-
 }
 
 
@@ -1660,7 +1718,7 @@ function getLocalChecklist(type){
 
   /* รถเครน / กระเช้า */
 
-  if(type === "รถเครน/กระเช้า"){
+  if(type === "รถเครน/รถกระเช้า"){
 
     return [
 
@@ -2093,27 +2151,7 @@ async function saveInspection(){
         "operatingStatus"
       )
       .value;
-
-
-  const department =
-    document
-      .getElementById(
-        "department"
-      )
-      .value
-      .trim();
-
-
-  const model =
-    document
-      .getElementById(
-        "model"
-      )
-      .value
-      .trim();
-
-
-  const notes =
+const notes =
     document
       .getElementById(
         "notes"
@@ -2141,7 +2179,7 @@ async function saveInspection(){
 
   if(
     usageType ===
-    "รถแก้กระแสไฟฟ้าขัดข้อง" &&
+    "งานแก้กระแสไฟฟ้าขัดข้อง" &&
     !shift
   ){
 
@@ -2200,13 +2238,7 @@ async function saveInspection(){
 
     operatingStatus:
       operatingStatus,
-
-    department:
-      department,
-
-    model:model,
-
-    inspector:
+inspector:
       inspector,
 
     date:
@@ -2522,6 +2554,55 @@ async function loadHistory(){
 }
 
 
+async function loadVehicleFromQR(plate){
+
+  try{
+
+    const response = await fetch(
+      "/api/vehicle?plate=" + encodeURIComponent(plate)
+    );
+
+    if(!response.ok){
+      throw new Error("ไม่พบทะเบียน " + plate);
+    }
+
+    const data = await response.json();
+    const vehicle = data.vehicle || data;
+
+    if(!vehicle || !vehicle.type){
+      throw new Error("ไม่พบประเภทของรถ");
+    }
+
+    const button =
+      [...document.querySelectorAll(".type-button")]
+        .find(x => x.dataset.type === vehicle.type);
+
+    if(!button){
+      throw new Error("ไม่พบประเภทพาหนะในระบบ");
+    }
+
+    // QR เป็นกรณีพิเศษ: เลือกประเภทรถให้อัตโนมัติ
+    selectVehicleType(vehicle.type, button);
+
+    await loadVehiclePlates(vehicle.type, plate);
+
+    const select = document.getElementById("plate");
+    select.value = String(vehicle.plate || plate).trim();
+
+    await loadVehicle();
+
+  }catch(error){
+
+    console.log(error);
+
+    const select = document.getElementById("plate");
+    select.disabled = false;
+    select.innerHTML =
+      `<option value="">ไม่พบทะเบียน ${escapeHtml(plate)}</option>`;
+  }
+}
+
+
 /* ==================================================
    ESCAPE HTML
 ================================================== */
@@ -2560,30 +2641,26 @@ document
     "change",
     loadVehicle
   );
-
-
-document
-  .getElementById("plate")
-  .addEventListener(
-    "blur",
-    loadVehicle
-  );
-
-
 /* ==================================================
    START
 ================================================== */
 
 usageChanged();
 
+// ยังไม่โหลดทะเบียน/ผู้ตรวจจนกว่าจะเลือกประเภทรถ
+document.getElementById("plate").disabled = true;
+document.getElementById("inspector").disabled = true;
+document.getElementById("plate").innerHTML =
+  '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
+document.getElementById("inspector").innerHTML =
+  '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
+
 const urlParams = new URLSearchParams(window.location.search);
 const qrPlate = urlParams.get("plate");
 
-if (qrPlate) {
-  document.getElementById("plate").value = qrPlate.trim();
-  loadVehicle();
-} else {
-  loadChecklist();
+if(qrPlate){
+  // QR สามารถเลือกประเภทจากทะเบียนให้อัตโนมัติ
+  loadVehicleFromQR(qrPlate.trim());
 }
 
 </script>
