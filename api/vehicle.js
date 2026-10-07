@@ -1,22 +1,11 @@
 const { getValues } = require('../lib/sheets');
 
 export default async function handler(req, res) {
-
   try {
+    const plate = String(req.query.plate || '').trim();
+    const type = String(req.query.type || '').trim();
 
-    const plate = String(
-      req.query.plate || ''
-    ).trim();
-
-    const type = String(
-      req.query.type || ''
-    ).trim();
-
-
-    const rows = await getValues(
-      'Vehicles!A:E'
-    );
-
+    const rows = await getValues('Vehicles!A:E');
 
     if (!rows.length) {
       return res.status(500).json({
@@ -25,118 +14,80 @@ export default async function handler(req, res) {
       });
     }
 
-
-    const h = rows[0];
-
+    const headers = rows[0];
     const idx = Object.fromEntries(
-      h.map((x, i) => [
-        String(x).trim(),
-        i
-      ])
+      headers.map((x, i) => [String(x).trim(), i])
     );
-
 
     const vehicles = rows
       .slice(1)
       .filter(row => {
-
-        // ข้ามรถที่ปิดการใช้งาน
+        // ถ้ามีคอลัมน์ "ใช้งาน" และเป็น FALSE ให้ไม่แสดง
         if (
           idx['ใช้งาน'] !== undefined &&
-          String(
-            row[idx['ใช้งาน']]
-          ).toUpperCase() === 'FALSE'
+          String(row[idx['ใช้งาน']] ?? '').trim().toUpperCase() === 'FALSE'
         ) {
           return false;
         }
 
-
-        // ถ้ามีการเลือกประเภท
+        // ถ้าเลือกประเภท ให้กรองตามประเภท
         if (type) {
-
-          return String(
-            row[idx['ประเภทรถ']] ?? ''
-          ).trim() === type;
-
+          return (
+            String(row[idx['ประเภทรถ']] ?? '').trim() === type
+          );
         }
 
-
         return true;
-
       })
       .map(row => ({
-
-        plate:
-          row[idx['เลขทะเบียน']] || '',
-
-        type:
-          row[idx['ประเภทรถ']] || '',
-
-        department:
-          row[idx['หน่วยงาน']] || '',
-
-        model:
-          row[idx['ยี่ห้อ/รุ่น']] || ''
-
+        plate: row[idx['เลขทะเบียน']] || '',
+        type: row[idx['ประเภทรถ']] || '',
+        department: row[idx['หน่วยงาน']] || '',
+        model: row[idx['ยี่ห้อ/รุ่น']] || ''
       }));
 
+    // ค้นหาด้วยทะเบียน
+    if (plate) {
+      const vehicle = vehicles.find(
+        item =>
+          String(item.plate).trim() === plate
+      );
 
-    // ==========================================
-    // กรณีต้องการ "รายการทะเบียน"
-    // /api/vehicle?type=รถยก
-    // ==========================================
-
-    if (!plate) {
+      if (!vehicle) {
+        return res.status(404).json({
+          success: false,
+          message: 'ไม่พบทะเบียน ' + plate
+        });
+      }
 
       return res.status(200).json({
         success: true,
-        vehicles
+        vehicle
       });
-
     }
 
+    // โหลดทะเบียนตามประเภท และตัดทะเบียนซ้ำ
+    const seen = new Set();
+    const uniqueVehicles = vehicles.filter(vehicle => {
+      const key = String(vehicle.plate).trim();
 
-    // ==========================================
-    // กรณีเลือกทะเบียน
-    // /api/vehicle?plate=80-1234
-    // ==========================================
+      if (!key || seen.has(key)) {
+        return false;
+      }
 
-    const vehicle = vehicles.find(
-      x =>
-        String(x.plate).trim() === plate
-    );
-
-
-    if (!vehicle) {
-
-      return res.status(404).json({
-        success: false,
-        message:
-          'ไม่พบทะเบียน ' + plate
-      });
-
-    }
-
+      seen.add(key);
+      return true;
+    });
 
     return res.status(200).json({
-
       success: true,
-
-      vehicle
-
+      vehicles: uniqueVehicles
     });
-
 
   } catch (e) {
-
     return res.status(500).json({
-
       success: false,
-
       message: e.message
-
     });
-
   }
-
 }
