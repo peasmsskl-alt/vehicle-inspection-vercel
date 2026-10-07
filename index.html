@@ -1403,62 +1403,51 @@ function usageChanged(){
    รายชื่อผู้ตรวจตามประเภทรถ
 ================================================== */
 
-const inspectorLists = {
-
-  "รถยนต์":[
-    "นาย ศุภวิชญ์ ชูทอง",
-    "นาย ศุภณัฐฎ์ ต้นวิพัฒน์",
-    "นาย วิชัย สวัสดีรักษา",
-    "นาย ธีระพงศ์ สุระวี",
-    "นาย มานะ ต่วนสกุล",
-    "นาย พูนสุข ต่วนสกุล",
-    "นาย พินิจ ต่วนสกุล",
-    "นาย กฤษณะ เจ๊ะสว่าง",
-    "นาย สุริยัน กลสามัญ",
-    "นาย ปัญญา คงทอง",
-    "นาย สิริ อินเอียด",
-    "นาย นพปฏูล รักษ์เพ็ชร",
-    "นาย มนตรี รัตนเสถียร",
-    "นาย คณิศร ศักดิ์ยิ่งยง",
-    "นาย ธงชัย ชัยสุริยา",
-    "นาย ศุภณัฐ ต้นวิพัฒน์",
-    "นาย เกรียงศักดิ์ สุวรรณรัตน์",
-    "นาย เจตศักดา ขาวปั้น"
-  ],
-
-  "รถยก":[
-    "นาย ชาริติ สุวรรณรัตน์",
-    "นาย สำราญ จินดารัตน์",
-    "นาย กอบบุญ เกื้อเพ็ชร"
-  ],
-
-  "รถเครน/รถกระเช้า":[
-    "นาย ทินกร เบ็ญจพร",
-    "นายสุทัน ชัยสุริยา",
-    "นาย สุริยัน กลสามัญ",
-    "นาย ศาตรา หนูทอง",
-    "นาย วิชาญ ศรีไชย",
-    "นาย บุญโฉม ศรีรักษา"
-  ]
-
-};
-
-function loadInspectors(type){
+async function loadInspectors(type){
 
   const select = document.getElementById("inspector");
   if(!select) return;
 
-  const names = inspectorLists[type] || [];
+  if(!type){
+    select.disabled = true;
+    select.innerHTML = '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
+    return;
+  }
 
-  select.innerHTML =
-    '<option value="">-- เลือกผู้ตรวจ --</option>' +
-    names
-      .map(name =>
-        `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`
-      )
-      .join("");
+  select.disabled = true;
+  select.innerHTML = '<option value="">กำลังโหลดรายชื่อผู้ตรวจ...</option>';
 
-  select.disabled = !type;
+  try{
+    const response = await fetch(
+      "/api/inspectors?type=" + encodeURIComponent(type)
+    );
+
+    if(!response.ok){
+      throw new Error("โหลดรายชื่อผู้ตรวจไม่สำเร็จ");
+    }
+
+    const data = await response.json();
+    const inspectors = Array.isArray(data.inspectors) ? data.inspectors : [];
+
+    select.innerHTML =
+      '<option value="">-- เลือกผู้ตรวจ --</option>' +
+      inspectors.map(item => {
+        const name = item.name || "";
+        return `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`;
+      }).join("");
+
+    if(!inspectors.length){
+      select.innerHTML = '<option value="">-- ไม่พบรายชื่อผู้ตรวจ --</option>';
+    }
+
+    select.disabled = false;
+
+  }catch(error){
+    console.error("loadInspectors:", error);
+    select.disabled = false;
+    select.innerHTML = '<option value="">-- โหลดรายชื่อไม่สำเร็จ --</option>';
+  }
+
 }
 
 
