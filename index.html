@@ -3605,10 +3605,66 @@ const qrPlate = urlParams.get("plate");
 
 if (qrPlate) {
 
-  document.getElementById("plate").value =
-    qrPlate.trim();
+  const plate = qrPlate.trim();
 
-  loadChecklist();
+  fetch("/api/vehicle?plate=" + encodeURIComponent(plate))
+    .then(response => response.json())
+    .then(data => {
+
+      const vehicle = data.vehicle || data;
+
+      if (!vehicle || !vehicle.type) {
+        alert("ไม่พบข้อมูลรถทะเบียน " + plate);
+        return;
+      }
+
+      const buttons = document.querySelectorAll(".type-button");
+
+      buttons.forEach(button => {
+
+        if (button.dataset.type === vehicle.type) {
+
+          selectVehicleType(
+            vehicle.type,
+            button
+          );
+
+        }
+
+      });
+
+      setTimeout(() => {
+
+        const plateSelect =
+          document.getElementById("plate");
+
+        const option =
+          [...plateSelect.options]
+            .find(
+              option =>
+                option.value.trim() === plate
+            );
+
+        if (option) {
+
+          plateSelect.value = option.value;
+
+          loadVehicle();
+
+          setUsageByPlate(option.value);
+
+        }
+
+      }, 500);
+
+    })
+    .catch(error => {
+
+      console.error("QR Vehicle Error:", error);
+
+      alert("ไม่สามารถโหลดข้อมูลรถจาก QR ได้");
+
+    });
 
 } else {
 
