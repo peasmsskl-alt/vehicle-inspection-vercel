@@ -1212,9 +1212,7 @@ select:disabled{
       ประวัติการตรวจ
     </div>
 
-
     <div class="history-search">
-
 
       <div>
 
@@ -1225,39 +1223,60 @@ select:disabled{
         <input
           id="historyPlate"
           type="text"
-          placeholder="ค้นหาทะเบียน">
+          placeholder="ค้นหาทะเบียน เช่น 81-0164 สข">
 
       </div>
-
 
       <div>
 
         <label class="title">
-          วันที่
+          เดือนที่ต้องการ
         </label>
 
         <input
-          id="historyDate"
-          type="date">
+          id="historyMonth"
+          type="month">
 
       </div>
 
-
     </div>
 
+    <div style="margin-top:10px">
+
+      <label class="title">
+        หรือเลือกวันที่
+      </label>
+
+      <input
+        id="historyDate"
+        type="date">
+
+    </div>
 
     <button
       class="history-button"
       onclick="loadHistory()">
 
-      ค้นหาประวัติ
+      🔍 ค้นหาประวัติ
 
     </button>
 
   </div>
 
 
+  <!-- สรุปรายเดือน -->
+
+  <div
+    id="historySummary"
+    class="hidden">
+
+  </div>
+
+
+  <!-- รายการตรวจ -->
+
   <div id="historyList">
+
   </div>
 
 </section>
@@ -2287,13 +2306,17 @@ inspector:
       );
 
 
-    if(!response.ok){
+const result =
+  await response.json();
 
-      throw new Error(
-        "บันทึกไม่สำเร็จ"
-      );
+if(!response.ok){
 
-    }
+  throw new Error(
+    result.message ||
+    "บันทึกไม่สำเร็จ"
+  );
+
+}
 
 
     alert(
@@ -2333,57 +2356,65 @@ async function loadHistory(){
 
   const plate =
     document
-      .getElementById(
-        "historyPlate"
-      )
+      .getElementById("historyPlate")
       .value
       .trim();
 
+  const month =
+    document
+      .getElementById("historyMonth")
+      .value;
 
   const date =
     document
-      .getElementById(
-        "historyDate"
-      )
+      .getElementById("historyDate")
       .value;
-
 
   const container =
     document.getElementById(
       "historyList"
     );
 
+  const summaryBox =
+    document.getElementById(
+      "historySummary"
+    );
 
   container.innerHTML = `
-
     <div class="card">
       กำลังโหลดประวัติ...
     </div>
-
   `;
 
+  summaryBox.classList.add(
+    "hidden"
+  );
 
-  try{
+  try {
 
     const params =
       new URLSearchParams();
 
-
-    if(plate){
+    if (plate) {
       params.set(
         "plate",
         plate
       );
     }
 
+    if (month) {
+      params.set(
+        "month",
+        month
+      );
+    }
 
-    if(date){
+    if (date) {
       params.set(
         "date",
         date
       );
     }
-
 
     const response =
       await fetch(
@@ -2391,34 +2422,103 @@ async function loadHistory(){
         params.toString()
       );
 
-
-    if(!response.ok){
-
-      throw new Error();
-
-    }
-
-
     const data =
       await response.json();
 
+    if (!response.ok) {
+
+      throw new Error(
+        data.message ||
+        "โหลดประวัติไม่สำเร็จ"
+      );
+
+    }
 
     const rows =
-      Array.isArray(data)
-        ? data
-        : (
-            data.items ||
-            data.history ||
-            []
-          );
+      data.items || [];
+
+    const summary =
+      data.summary || {};
 
 
-    if(!rows.length){
+    // =========================
+    // สรุป
+    // =========================
+
+    summaryBox.innerHTML = `
+
+      <div class="card">
+
+        <div class="section-title">
+          📊 สรุปผลการตรวจ
+        </div>
+
+        <div class="summary">
+
+          <div class="summary-box">
+            <span class="number">
+              ${summary.inspections || 0}
+            </span>
+            <span class="label">
+              ครั้งที่ตรวจ
+            </span>
+          </div>
+
+          <div class="summary-box good">
+            <span class="number">
+              ${summary.passed || 0}
+            </span>
+            <span class="label">
+              ปกติ
+            </span>
+          </div>
+
+          <div class="summary-box bad">
+            <span class="number">
+              ${summary.abnormal || 0}
+            </span>
+            <span class="label">
+              พบข้อบกพร่อง
+            </span>
+          </div>
+
+          <div class="summary-box bad">
+            <span class="number">
+              ${summary.defects || 0}
+            </span>
+            <span class="label">
+              ข้อบกพร่อง
+            </span>
+          </div>
+
+          <div class="summary-box">
+            <span class="number">
+              ${summary.vehicles || 0}
+            </span>
+            <span class="label">
+              รถที่ตรวจ
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    summaryBox.classList.remove(
+      "hidden"
+    );
+
+
+    if (!rows.length) {
 
       container.innerHTML = `
 
         <div class="card">
-          ยังไม่มีประวัติการตรวจ
+
+          ไม่พบประวัติการตรวจ
+
         </div>
 
       `;
@@ -2428,111 +2528,249 @@ async function loadHistory(){
     }
 
 
+    // =========================
+    // รายการตรวจ
+    // =========================
+
     container.innerHTML =
-      rows
-        .map(item=>{
+      rows.map(
+        (item, index) => {
 
           const bad =
             Number(
-              item.badCount || 0
+              item.defectCount || 0
             ) > 0;
+
+          const details =
+            Array.isArray(
+              item.results
+            )
+              ? item.results
+              : [];
 
 
           return `
 
-          <div class="history-item">
+            <div
+              class="history-item">
 
-            <span
-              class="
-                history-status
-                ${bad ? "bad" : "good"}
-              ">
+              <span
+                class="
+                  history-status
+                  ${bad ? "bad" : "good"}
+                ">
 
-              ${bad
-                ? "ไม่ผ่าน"
-                : "ผ่าน"}
+                ${bad
+                  ? "ไม่ผ่าน"
+                  : "ผ่าน"}
 
-            </span>
+              </span>
 
 
-            <strong>
-              ทะเบียน:
-              ${escapeHtml(
-                item.plate || "-"
-              )}
-            </strong>
+              <strong>
 
-            <br>
+                🚗 ทะเบียน:
+                ${escapeHtml(
+                  item.plate || "-"
+                )}
 
-            วันที่:
-            ${escapeHtml(
-              item.date ||
-              item.inspectionDate ||
-              "-"
-            )}
+              </strong>
 
-            <br>
-
-            ประเภทรถ:
-            ${escapeHtml(
-              item.type || "-"
-            )}
-
-            <br>
-
-            ลักษณะการใช้งาน:
-            ${escapeHtml(
-              item.usageType || "-"
-            )}
-
-            <br>
-
-            ${
-              item.shift
-              ?
-              `
-              กะ:
-              ${escapeHtml(
-                item.shift
-              )}
               <br>
-              `
-              :
-              ""
-            }
 
-            เลขไมล์:
-            ${escapeHtml(
-              String(
-                item.mileage ??
-                "-"
-              )
-            )}
+              📅 วันที่:
+              ${escapeHtml(
+                item.date || "-"
+              )}
 
-            <br>
+              <br>
 
-            ผู้ตรวจ:
-            ${escapeHtml(
-              item.inspector ||
-              "-"
-            )}
+              🚙 ประเภทรถ:
+              ${escapeHtml(
+                item.type || "-"
+              )}
 
-          </div>
+              <br>
+
+              👤 ผู้ตรวจ:
+              ${escapeHtml(
+                item.inspector || "-"
+              )}
+
+              <br>
+
+              🛣️ เลขไมล์:
+              ${escapeHtml(
+                String(
+                  item.mileage || "-"
+                )
+              )}
+
+              <br>
+
+              📋 ลักษณะการใช้งาน:
+              ${escapeHtml(
+                item.usageType || "-"
+              )}
+
+              ${
+                item.shift
+                ? `
+                  <br>
+                  🕐 กะ:
+                  ${escapeHtml(
+                    item.shift
+                  )}
+                `
+                : ""
+              }
+
+              <br>
+
+              📊 ผลรวม:
+              ${escapeHtml(
+                item.status || "-"
+              )}
+
+              <br>
+
+              ⚠️ ข้อบกพร่อง:
+              ${item.defectCount || 0}
+
+              ${
+                item.notes
+                ? `
+                  <br>
+                  📝 หมายเหตุ:
+                  ${escapeHtml(
+                    item.notes
+                  )}
+                `
+                : ""
+              }
+
+
+              <!-- รายละเอียดแต่ละข้อ -->
+
+              <div
+                style="
+                  margin-top:12px;
+                  border-top:1px solid #e5ddea;
+                  padding-top:10px;
+                ">
+
+                <strong>
+                  รายละเอียดการตรวจ
+                </strong>
+
+                <div
+                  style="
+                    margin-top:8px;
+                  ">
+
+                  ${
+                    details.length
+                    ? details.map(
+                        (detail, i) => `
+
+                          <div
+                            style="
+                              padding:7px 9px;
+                              margin-bottom:5px;
+                              border-radius:9px;
+                              background:
+                                ${
+                                  detail.result === "ไม่ผ่าน"
+                                  ? "#fdebed"
+                                  :
+                                  detail.result === "ไม่เกี่ยวข้อง"
+                                  ? "#eeeeee"
+                                  : "#e8f6ef"
+                                };
+                              color:
+                                ${
+                                  detail.result === "ไม่ผ่าน"
+                                  ? "#dc3545"
+                                  :
+                                  detail.result === "ไม่เกี่ยวข้อง"
+                                  ? "#666"
+                                  : "#168653"
+                                };
+                            ">
+
+                            <strong>
+                              ${i + 1}.
+                            </strong>
+
+                            ${escapeHtml(
+                              detail.name || "-"
+                            )}
+
+                            <br>
+
+                            <span
+                              style="
+                                font-weight:800;
+                              ">
+
+                              ${detail.result === "ผ่าน"
+                                ? "✓ ผ่าน"
+                                : detail.result === "ไม่ผ่าน"
+                                ? "✕ ไม่ผ่าน"
+                                : "⊖ ไม่เกี่ยวข้อง"}
+
+                            </span>
+
+                          </div>
+
+                        `
+                      ).join("")
+                    : `
+                      <div
+                        style="
+                          color:#777;
+                          font-size:12px;
+                        ">
+
+                        ไม่มีรายละเอียดผลตรวจ
+                        สำหรับรายการนี้
+
+                      </div>
+                    `
+                  }
+
+                </div>
+
+              </div>
+
+            </div>
 
           `;
 
-        })
-        .join("");
+        }
+      ).join("");
 
 
-  }catch(error){
+  } catch (error) {
+
+    console.error(error);
+
+    summaryBox.classList.add(
+      "hidden"
+    );
 
     container.innerHTML = `
 
       <div class="card">
 
-        ไม่สามารถโหลดประวัติได้
-        กรุณาตรวจสอบ API
+        ❌ ไม่สามารถโหลดประวัติได้
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message ||
+          "กรุณาตรวจสอบ API"
+        )}
 
       </div>
 
@@ -2541,56 +2779,6 @@ async function loadHistory(){
   }
 
 }
-
-
-async function loadVehicleFromQR(plate){
-
-  try{
-
-    const response = await fetch(
-      "/api/vehicle?plate=" + encodeURIComponent(plate)
-    );
-
-    if(!response.ok){
-      throw new Error("ไม่พบทะเบียน " + plate);
-    }
-
-    const data = await response.json();
-    const vehicle = data.vehicle || data;
-
-    if(!vehicle || !vehicle.type){
-      throw new Error("ไม่พบประเภทของรถ");
-    }
-
-    const button =
-      [...document.querySelectorAll(".type-button")]
-        .find(x => x.dataset.type === vehicle.type);
-
-    if(!button){
-      throw new Error("ไม่พบประเภทพาหนะในระบบ");
-    }
-
-    // QR เป็นกรณีพิเศษ: เลือกประเภทรถให้อัตโนมัติ
-    selectVehicleType(vehicle.type, button);
-
-    await loadVehiclePlates(vehicle.type, plate);
-
-    const select = document.getElementById("plate");
-    select.value = String(vehicle.plate || plate).trim();
-
-    await loadVehicle();
-
-  }catch(error){
-
-    console.log(error);
-
-    const select = document.getElementById("plate");
-    select.disabled = false;
-    select.innerHTML =
-      `<option value="">ไม่พบทะเบียน ${escapeHtml(plate)}</option>`;
-  }
-}
-
 
 /* ==================================================
    ESCAPE HTML
