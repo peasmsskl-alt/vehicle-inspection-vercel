@@ -1910,163 +1910,6 @@ async function loadVehiclePlates(type, selectedPlate = ""){
   }
 }
 
-  /* ==================================================
-   เปิดรถจาก QR Code
-================================================== */
-
-async function loadVehicleFromQR(plate){
-
-  try{
-
-    const response = await fetch(
-      "/api/vehicle?plate=" +
-      encodeURIComponent(plate)
-    );
-
-    if(!response.ok){
-      throw new Error(
-        "ไม่พบข้อมูลทะเบียน " + plate
-      );
-    }
-
-    const data = await response.json();
-
-    // API อาจส่งมาเป็นรถ 1 คัน หรือ array
-    const vehicles =
-      Array.isArray(data)
-        ? data
-        : (data.vehicles || []);
-
-    const vehicle =
-      vehicles.find(v =>
-        String(v.plate || "").trim() ===
-        String(plate || "").trim()
-      );
-
-    if(!vehicle){
-      throw new Error(
-        "ไม่พบทะเบียน " + plate +
-        " ในระบบ"
-      );
-    }
-
-    const type =
-      String(vehicle.type || "").trim();
-
-    if(!type){
-      throw new Error(
-        "ทะเบียนนี้ยังไม่มีประเภทรถ"
-      );
-    }
-
-
-    /* --------------------------------
-       หา ปุ่มประเภทรถ
-    -------------------------------- */
-
-    const buttons =
-      [...document.querySelectorAll(
-        ".type-button"
-      )];
-
-    let button = null;
-
-    buttons.forEach(btn => {
-
-      const text =
-        btn.textContent.trim();
-
-      if(
-        type === "รถยนต์" &&
-        text.includes("รถยนต์")
-      ){
-        button = btn;
-      }
-
-      if(
-        type === "รถยก" &&
-        text.includes("รถยก")
-      ){
-        button = btn;
-      }
-
-      if(
-        type === "รถเครน/รถกระเช้า" &&
-        text.includes("รถเครน")
-      ){
-        button = btn;
-      }
-
-    });
-
-
-    if(!button){
-
-      throw new Error(
-        "ไม่พบปุ่มประเภทรถ " + type
-      );
-
-    }
-
-
-    /* --------------------------------
-       เลือกประเภทรถอัตโนมัติ
-    -------------------------------- */
-
-    selectVehicleType(
-      type,
-      button
-    );
-
-
-    /* --------------------------------
-       โหลดทะเบียนและเลือกทะเบียนจาก QR
-    -------------------------------- */
-
-    await loadVehiclePlates(
-      type,
-      plate
-    );
-
-
-    /* --------------------------------
-       กำหนดลักษณะงานตามทะเบียน
-    -------------------------------- */
-
-    if(
-      typeof setUsageByPlate ===
-      "function"
-    ){
-
-      setUsageByPlate(
-        plate
-      );
-
-    }
-
-
-    /* --------------------------------
-       โหลดข้อมูลรถ
-    -------------------------------- */
-
-    await loadVehicle();
-
-  }catch(error){
-
-    console.error(
-      "QR Error:",
-      error
-    );
-
-    alert(
-      "ไม่สามารถเปิดข้อมูลรถจาก QR ได้\n\n" +
-      error.message
-    );
-
-  }
-
-}
-  
 
 
 /* ==================================================
@@ -3762,12 +3605,13 @@ const qrPlate = urlParams.get("plate");
 
 if (qrPlate) {
 
-  // เปิดจาก QR Code
-  loadVehicleFromQR(qrPlate.trim());
+  document.getElementById("plate").value =
+    qrPlate.trim();
+
+  loadChecklist();
 
 } else {
 
-  // เปิดเว็บปกติ
   loadChecklist();
 
 }
