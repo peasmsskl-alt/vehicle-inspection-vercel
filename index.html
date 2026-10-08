@@ -551,62 +551,6 @@ textarea{
   background:var(--red-light);
   color:var(--red);
 }
-  /* =========================
-   MONTHLY REPORT
-========================= */
-
-.monthly-report{
-  margin-top:12px;
-}
-
-.report-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-  background:white;
-}
-
-.report-table th{
-  background:var(--purple-light);
-  color:var(--purple);
-  padding:9px 6px;
-  border-bottom:1px solid #ddd;
-  text-align:center;
-}
-
-.report-table td{
-  padding:9px 6px;
-  border-bottom:1px solid #eee;
-  text-align:center;
-}
-
-.report-table td:first-child{
-  text-align:left;
-  font-weight:700;
-}
-
-.report-ok{
-  color:var(--green);
-  font-weight:800;
-}
-
-.report-bad{
-  color:var(--red);
-  font-weight:800;
-}
-
-.report-warning{
-  background:#fff8e8;
-  color:#a56a00;
-  font-weight:800;
-}
-
-.report-section-title{
-  font-size:14px;
-  font-weight:800;
-  color:var(--purple);
-  margin:15px 0 8px;
-}
 
 .hidden{
   display:none !important;
@@ -680,12 +624,6 @@ textarea{
   }
 
 }
-.type-button:disabled,
-select:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-}
-
 .vehicle-img{
   width:42px;
   height:35px;
@@ -781,259 +719,6 @@ select:disabled{
   display:block;
   margin:0 auto 8px;
 }
-  /* ==================================================
-   REPORT - แยกส่วน 3 กะ / รถทั้งหมด
-================================================== */
-
-.report-main-card {
-  margin-bottom: 18px;
-}
-
-.report-month {
-  color: #777;
-  font-size: 13px;
-  margin-bottom: 12px;
-}
-
-
-/* =========================
-   ⚡ ตรวจ 3 กะ
-========================= */
-
-.repair-shift-report {
-  margin-top: 18px;
-  margin-bottom: 18px;
-
-  border: 2px solid #eadcf2;
-  border-radius: 16px;
-
-  background: #fcf9fe;
-}
-
-.repair-report-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 16px 18px;
-
-  border-bottom: 1px solid #eadcf2;
-}
-
-.repair-report-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: #4b0874;
-}
-
-.repair-report-subtitle {
-  margin-top: 3px;
-
-  font-size: 13px;
-  color: #777;
-}
-
-.repair-badge {
-  background: #4b0874;
-  color: white;
-
-  padding: 6px 12px;
-
-  border-radius: 20px;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.repair-vehicle-list {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 12px;
-
-  padding: 16px;
-}
-
-.repair-vehicle-card {
-  background: white;
-
-  border: 1px solid #e5d9eb;
-
-  border-radius: 12px;
-
-  padding: 14px;
-}
-
-.repair-vehicle-top {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  gap: 8px;
-
-  margin-bottom: 12px;
-}
-
-.repair-plate {
-  font-weight: 800;
-
-  color: #4b0874;
-
-  font-size: 15px;
-}
-
-.repair-complete-badge {
-  padding: 5px 8px;
-
-  border-radius: 8px;
-
-  font-size: 11px;
-
-  font-weight: 800;
-
-  white-space: nowrap;
-}
-
-.repair-complete-badge.complete {
-  background: #e8f6ef;
-  color: #168653;
-}
-
-.repair-complete-badge.incomplete {
-  background: #fff0f0;
-  color: #dc3545;
-}
-
-.repair-shifts {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 6px;
-}
-
-.repair-shift {
-  text-align: center;
-
-  padding: 9px 4px;
-
-  border-radius: 9px;
-}
-
-.repair-shift.done {
-  background: #e8f6ef;
-  color: #168653;
-}
-
-.repair-shift.missing {
-  background: #fff0f0;
-  color: #dc3545;
-}
-
-.shift-name {
-  font-weight: 800;
-
-  font-size: 12px;
-}
-
-.shift-status {
-  margin-top: 3px;
-
-  font-size: 10px;
-}
-
-.repair-total {
-  margin-top: 10px;
-
-  text-align: right;
-
-  color: #777;
-
-  font-size: 11px;
-}
-
-.repair-total strong {
-  color: #4b0874;
-
-  font-size: 13px;
-}
-
-.repair-empty {
-  padding: 25px;
-
-  text-align: center;
-
-  color: #777;
-
-  font-size: 13px;
-}
-
-
-/* =========================
-   🚗 รถทุกคัน
-========================= */
-
-.all-vehicle-report {
-  margin-top: 18px;
-
-  border-radius: 16px;
-}
-
-.all-vehicle-header {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 14px;
-}
-
-.all-vehicle-title {
-  font-size: 19px;
-
-  font-weight: 800;
-
-  color: #333;
-}
-
-.all-vehicle-subtitle {
-  margin-top: 3px;
-
-  font-size: 12px;
-
-  color: #777;
-}
-
-.all-vehicle-badge {
-  background: #f0ebf4;
-
-  color: #4b0874;
-
-  padding: 6px 12px;
-
-  border-radius: 20px;
-
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
-
-/* =========================
-   หน้าจอเล็ก
-========================= */
-
-@media (max-width: 900px) {
-
-  .repair-vehicle-list {
-    grid-template-columns: 1fr;
-  }
-
-}
   
 </style>
 </head>
@@ -1115,8 +800,8 @@ select:disabled{
   เลขทะเบียน <span class="required">*</span>
 </label>
 
-<select id="plate" onchange="loadVehicle(); setUsageByPlate(this.value)" disabled>
-  <option value="">-- กรุณาเลือกประเภทรถก่อน --</option>
+<select id="plate" onchange="loadVehicle()">
+  <option value="">-- เลือกเลขทะเบียน --</option>
 </select>
 
     </div>
@@ -1152,7 +837,7 @@ select:disabled{
 
   <button
     type="button"
-    class="type-button"
+    class="type-button active"
     data-type="รถยนต์"
     onclick="selectVehicleType('รถยนต์',this)">
 
@@ -1173,15 +858,15 @@ select:disabled{
     class="vehicle-img"
     alt="รถยก">
 
-  <span>รถยก</span>
+  <span>รถยก (Forklift)</span>
 </button>
 
 
   <button
     type="button"
     class="type-button"
-    data-type="รถเครน/รถกระเช้า"
-    onclick="selectVehicleType('รถเครน/รถกระเช้า',this)">
+    data-type="รถเครน/กระเช้า"
+    onclick="selectVehicleType('รถเครน/กระเช้า',this)">
 
     <img
       src="https://www.svgrepo.com/show/237101/crane-truck.svg"
@@ -1343,8 +1028,8 @@ select:disabled{
         ผู้ตรวจ <span class="required">*</span>
       </label>
 
-      <select id="inspector" disabled>
-  <option value="">-- กรุณาเลือกประเภทรถก่อน --</option>
+      <select id="inspector">
+  <option value="">-- เลือกผู้ตรวจ --</option>
 </select>
 
     </div>
@@ -1521,7 +1206,9 @@ select:disabled{
       ประวัติการตรวจ
     </div>
 
+
     <div class="history-search">
+
 
       <div>
 
@@ -1532,60 +1219,39 @@ select:disabled{
         <input
           id="historyPlate"
           type="text"
-          placeholder="ค้นหาทะเบียน เช่น 81-0164 สข">
+          placeholder="ค้นหาทะเบียน">
 
       </div>
+
 
       <div>
 
         <label class="title">
-          เดือนที่ต้องการ
+          วันที่
         </label>
 
         <input
-          id="historyMonth"
-          type="month">
+          id="historyDate"
+          type="date">
 
       </div>
 
-    </div>
-
-    <div style="margin-top:10px">
-
-      <label class="title">
-        หรือเลือกวันที่
-      </label>
-
-      <input
-        id="historyDate"
-        type="date">
 
     </div>
+
 
     <button
       class="history-button"
       onclick="loadHistory()">
 
-      🔍 ค้นหาประวัติ
+      ค้นหาประวัติ
 
     </button>
 
   </div>
 
 
-  <!-- สรุปรายเดือน -->
-
-  <div
-    id="historySummary"
-    class="hidden">
-
-  </div>
-
-
-  <!-- รายการตรวจ -->
-
   <div id="historyList">
-
   </div>
 
 </section>
@@ -1598,7 +1264,7 @@ select:disabled{
    VARIABLES
 ================================================== */
 
-let vehicleType = "";
+let vehicleType = "รถยนต์";
 
 let checklistData = [];
 
@@ -1656,7 +1322,7 @@ function showTab(tab){
    VEHICLE TYPE
 ================================================== */
 
-function selectVehicleType(type,button,selectedPlate = ""){
+function selectVehicleType(type,button){
 
   vehicleType = type;
 
@@ -1668,35 +1334,24 @@ function selectVehicleType(type,button,selectedPlate = ""){
 
   button.classList.add("active");
 
-  const plateSelect =
-    document.getElementById("plate");
-
-  const inspectorSelect =
-    document.getElementById("inspector");
-
-  plateSelect.disabled = false;
-  inspectorSelect.disabled = false;
-
-  // ล้างข้อมูลเดิม
-  plateSelect.value = "";
-  inspectorSelect.value = "";
-
-  document
-    .getElementById("vehicleInfo")
-    .classList.add("hidden");
-
-  document
-    .getElementById("vehicleInfo")
-    .innerHTML = "";
-
-  // ตั้งค่า "ลักษณะการใช้งาน" เป็นงานทั่วไปก่อน
-  setUsageByPlate("");
-
-  // โหลดข้อมูล
+  // เปลี่ยนรายการตรวจ
   loadChecklist();
-  loadVehiclePlates(type, selectedPlate);
+
+  // เปลี่ยนรายการทะเบียนตามประเภทรถ
+  loadVehiclePlates(type);
+
+  // เปลี่ยนรายชื่อผู้ตรวจตามประเภทรถ
   loadInspectors(type);
+
+  // ล้างข้อมูลรถเดิม
+  document.getElementById("plate").value = "";
+
+  const info = document.getElementById("vehicleInfo");
+  info.classList.add("hidden");
+  info.innerHTML = "";
+
 }
+
 
 /* ==================================================
    USAGE
@@ -1735,99 +1390,68 @@ function usageChanged(){
 
 }
 
-  function setUsageByPlate(plate){
-
-  const repairVehicles = [
-    "81-9152 สข",
-    "3ฒง 9030 กทม",
-    "82-8020 สข"
-  ];
-
-  const repair =
-    repairVehicles.includes(
-      String(plate || "").trim()
-    );
-
-  const repairRadio =
-    document.querySelector(
-      'input[name="usageType"][value="งานแก้กระแสไฟฟ้าขัดข้อง"]'
-    );
-
-  const generalRadio =
-    document.querySelector(
-      'input[name="usageType"][value="งานทั่วไป"]'
-    );
-
-  if(!repairRadio || !generalRadio) return;
-
-  if(repair){
-
-    repairRadio.checked = true;
-    generalRadio.checked = false;
-
-  }else{
-
-    repairRadio.checked = false;
-    generalRadio.checked = true;
-
-  }
-
-  // ล็อกไม่ให้ผู้ตรวจเปลี่ยนเอง
-  repairRadio.disabled = true;
-  generalRadio.disabled = true;
-
-  usageChanged();
-}
-
 
 /* ==================================================
    รายชื่อผู้ตรวจตามประเภทรถ
 ================================================== */
 
-async function loadInspectors(type){
+const inspectorLists = {
 
-  const select = document.getElementById("inspector");
+  "รถยนต์":[
+    "นาย ศุภวิชญ์ ชูทอง",
+    "นาย ศุภณัฐฎ์ ต้นวิพัฒน์",
+    "นาย วิชัย สวัสดีรักษา",
+    "นาย ธีระพงศ์ สุระวี",
+    "นาย มานะ ต่วนสกุล",
+    "นาย พูนสุข ต่วนสกุล",
+    "นาย พินิจ ต่วนสกุล",
+    "นาย กฤษณะ เจ๊ะสว่าง",
+    "นาย สุริยัน กลสามัญ",
+    "นาย ปัญญา คงทอง",
+    "นาย สิริ อินเอียด",
+    "นาย นพปฏูล รักษ์เพ็ชร",
+    "นาย มนตรี รัตนเสถียร",
+    "นาย คณิศร ศักดิ์ยิ่งยง",
+    "นาย ธงชัย ชัยสุริยา",
+    "นาย ศุภณัฐ ต้นวิพัฒน์",
+    "นาย เกรียงศักดิ์ สุวรรณรัตน์",
+    "นาย เจตศักดา ขาวปั้น"
+  ],
+
+  "รถยก":[
+    "นาย ชาริติ สุวรรณรัตน์",
+    "นาย สำราญ จินดารัตน์",
+    "นาย กอบบุญ เกื้อเพ็ชร"
+  ],
+
+  "รถเครน/กระเช้า":[
+    "นาย ทินกร เบ็ญจพร",
+    "นายสุทัน ชัยสุริยา",
+    "นาย สุริยัน กลสามัญ",
+    "นาย ศาตรา หนูทอง",
+    "นาย วิชาญ ศรีไชย",
+    "นาย บุญโฉม ศรีรักษา"
+  ]
+
+};
+
+function loadInspectors(type){
+
+  const select =
+    document.getElementById("inspector");
+
   if(!select) return;
 
-  if(!type){
-    select.disabled = true;
-    select.innerHTML = '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
-    return;
-  }
+  const names =
+    inspectorLists[type] || [];
 
-  select.disabled = true;
-  select.innerHTML = '<option value="">กำลังโหลดรายชื่อผู้ตรวจ...</option>';
-
-  try{
-    const response = await fetch(
-      "/api/inspectors?type=" + encodeURIComponent(type)
-    );
-
-    if(!response.ok){
-      throw new Error("โหลดรายชื่อผู้ตรวจไม่สำเร็จ");
-    }
-
-    const data = await response.json();
-    const inspectors = Array.isArray(data.inspectors) ? data.inspectors : [];
-
-    select.innerHTML =
-      '<option value="">-- เลือกผู้ตรวจ --</option>' +
-      inspectors.map(item => {
-        const name = item.name || "";
-        return `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`;
-      }).join("");
-
-    if(!inspectors.length){
-      select.innerHTML = '<option value="">-- ไม่พบรายชื่อผู้ตรวจ --</option>';
-    }
-
-    select.disabled = false;
-
-  }catch(error){
-    console.error("loadInspectors:", error);
-    select.disabled = false;
-    select.innerHTML = '<option value="">-- โหลดรายชื่อไม่สำเร็จ --</option>';
-  }
+  select.innerHTML =
+    '<option value="">-- เลือกผู้ตรวจ --</option>' +
+    names
+      .map(name =>
+        `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`
+      )
+      .join("");
 
 }
 
@@ -1836,69 +1460,73 @@ async function loadInspectors(type){
    โหลดเลขทะเบียนตามประเภทรถ
 ================================================== */
 
-async function loadVehiclePlates(type, selectedPlate = ""){
+async function loadVehiclePlates(
+  type,
+  selectedPlate = ""
+){
 
-  const select = document.getElementById("plate");
+  const select =
+    document.getElementById("plate");
+
   if(!select) return;
 
-  if(!type){
-    select.disabled = true;
-    select.innerHTML =
-      '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
-    return;
-  }
-
-  select.disabled = false;
   select.innerHTML =
     '<option value="">กำลังโหลดทะเบียน...</option>';
 
   try{
 
-    const response = await fetch(
-      "/api/vehicle?type=" + encodeURIComponent(type)
-    );
+    const response =
+      await fetch(
+        "/api/vehicle?type=" +
+        encodeURIComponent(type)
+      );
 
     if(!response.ok){
       throw new Error("โหลดทะเบียนไม่สำเร็จ");
     }
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     const vehicles =
       Array.isArray(data)
         ? data
         : (data.vehicles || []);
 
-    // แสดงเลขทะเบียนไม่ซ้ำ
-    const seen = new Set();
-
     select.innerHTML =
       '<option value="">-- เลือกเลขทะเบียน --</option>';
 
-    vehicles.forEach(vehicle => {
+    vehicles.forEach(vehicle=>{
 
       const plate =
         String(vehicle.plate || "").trim();
 
-      if(!plate || seen.has(plate)) return;
+      if(!plate) return;
 
-      seen.add(plate);
+      const option =
+        document.createElement("option");
 
-      const option = document.createElement("option");
       option.value = plate;
       option.textContent = plate;
 
       select.appendChild(option);
+
     });
 
     if(selectedPlate){
-      const wanted = String(selectedPlate).trim();
-      const found = [...select.options]
-        .find(option => option.value === wanted);
+
+      const found =
+        [...select.options]
+          .find(
+            option =>
+              option.value ===
+              String(selectedPlate).trim()
+          );
 
       if(found){
         select.value = found.value;
       }
+
     }
 
   }catch(error){
@@ -1907,9 +1535,10 @@ async function loadVehiclePlates(type, selectedPlate = ""){
 
     select.innerHTML =
       '<option value="">-- โหลดทะเบียนไม่สำเร็จ --</option>';
-  }
-}
 
+  }
+
+}
 
 
 /* ==================================================
@@ -1919,47 +1548,84 @@ async function loadVehiclePlates(type, selectedPlate = ""){
 async function loadVehicle(){
 
   const plate =
-    document.getElementById("plate").value.trim();
+    document
+      .getElementById("plate")
+      .value
+      .trim();
 
-  if(!plate || !vehicleType){
-    document.getElementById("vehicleInfo").classList.add("hidden");
+  if(!plate){
+      document.getElementById("vehicleInfo").classList.add("hidden");
     return;
   }
 
   try{
 
-    const response = await fetch(
-      "/api/vehicle?plate=" + encodeURIComponent(plate)
-    );
+    const response =
+      await fetch(
+        "/api/vehicle?plate=" +
+        encodeURIComponent(plate)
+      );
 
     if(!response.ok){
       throw new Error("ไม่พบข้อมูลรถ");
     }
 
     const data = await response.json();
+
     const vehicle = data.vehicle || data;
 
     if(!vehicle){
       throw new Error("ไม่พบข้อมูลรถ");
     }
+/*
+      ถ้าข้อมูลรถระบุประเภทไว้
+      ให้เลือกประเภทนั้นอัตโนมัติ
+    */
+    if(vehicle.type && vehicle.type !== vehicleType){
 
-    // ป้องกันทะเบียนผิดประเภท
-    if(
-      vehicle.type &&
-      String(vehicle.type).trim() !== String(vehicleType).trim()
-    ){
-      alert("ทะเบียนนี้ไม่ใช่ประเภทรถที่เลือก");
-      document.getElementById("plate").value = "";
-      return;
+      const button =
+        [
+          ...document.querySelectorAll(".type-button")
+        ].find(
+          x => x.dataset.type === vehicle.type
+        );
+
+      if(button){
+        vehicleType = vehicle.type;
+
+        document
+          .querySelectorAll(".type-button")
+          .forEach(btn=>{
+            btn.classList.remove("active");
+          });
+
+        button.classList.add("active");
+
+        await loadChecklist();
+        await loadVehiclePlates(vehicle.type, plate);
+        loadInspectors(vehicle.type);
+      }
     }
 
-    const info = document.getElementById("vehicleInfo");
+    const info =
+      document.getElementById("vehicleInfo");
 
     info.innerHTML = `
+
       <strong>ข้อมูลรถ</strong><br>
-      เลขทะเบียน: ${escapeHtml(vehicle.plate || plate)}<br>
-      ประเภทรถ: ${escapeHtml(vehicle.type || vehicleType)}
-    `;
+
+      เลขทะเบียน:
+      ${escapeHtml(
+        vehicle.plate || plate
+      )}
+
+      <br>
+
+      ประเภทรถ:
+      ${escapeHtml(
+        vehicle.type || vehicleType
+      )}
+`;
 
     info.classList.remove("hidden");
 
@@ -1967,8 +1633,12 @@ async function loadVehicle(){
 
     console.log(error);
 
-    document.getElementById("vehicleInfo").classList.add("hidden");
+    document
+      .getElementById("vehicleInfo")
+      .classList.add("hidden");
+
   }
+
 }
 
 
@@ -2089,7 +1759,7 @@ function getLocalChecklist(type){
 
   /* รถเครน / กระเช้า */
 
-  if(type === "รถเครน/รถกระเช้า"){
+  if(type === "รถเครน/กระเช้า"){
 
     return [
 
@@ -2669,17 +2339,13 @@ inspector:
       );
 
 
-const result =
-  await response.json();
+    if(!response.ok){
 
-if(!response.ok){
+      throw new Error(
+        "บันทึกไม่สำเร็จ"
+      );
 
-  throw new Error(
-    result.message ||
-    "บันทึกไม่สำเร็จ"
-  );
-
-}
+    }
 
 
     alert(
@@ -2719,65 +2385,57 @@ async function loadHistory(){
 
   const plate =
     document
-      .getElementById("historyPlate")
+      .getElementById(
+        "historyPlate"
+      )
       .value
       .trim();
 
-  const month =
-    document
-      .getElementById("historyMonth")
-      .value;
 
   const date =
     document
-      .getElementById("historyDate")
+      .getElementById(
+        "historyDate"
+      )
       .value;
+
 
   const container =
     document.getElementById(
       "historyList"
     );
 
-  const summaryBox =
-    document.getElementById(
-      "historySummary"
-    );
 
   container.innerHTML = `
+
     <div class="card">
       กำลังโหลดประวัติ...
     </div>
+
   `;
 
-  summaryBox.classList.add(
-    "hidden"
-  );
 
-  try {
+  try{
 
     const params =
       new URLSearchParams();
 
-    if (plate) {
+
+    if(plate){
       params.set(
         "plate",
         plate
       );
     }
 
-    if (month) {
-      params.set(
-        "month",
-        month
-      );
-    }
 
-    if (date) {
+    if(date){
       params.set(
         "date",
         date
       );
     }
+
 
     const response =
       await fetch(
@@ -2785,508 +2443,34 @@ async function loadHistory(){
         params.toString()
       );
 
+
+    if(!response.ok){
+
+      throw new Error();
+
+    }
+
+
     const data =
       await response.json();
 
-    if (!response.ok) {
-
-      throw new Error(
-        data.message ||
-        "โหลดประวัติไม่สำเร็จ"
-      );
-
-    }
 
     const rows =
-      data.items || [];
-
-    const summary =
-      data.summary || {};
-
-    const vehicles =
-  data.vehicles || [];
-
-const topDefects =
-  data.topDefects || [];
-
-const repairSummary =
-  data.repairSummary || [];
-
-
-    // =========================
-    // สรุป
-    // =========================
-
-   summaryBox.innerHTML = `
-
-  <!-- =================================================
-       📊 สรุปรายงานประจำเดือน
-  ================================================== -->
-
-  <div class="card report-main-card">
-
-    <div class="section-title">
-      📊 สรุปรายงานประจำเดือน
-    </div>
-
-    ${
-      month
-      ? `
-        <div class="report-month">
-          เดือน:
-          <strong>${escapeHtml(month)}</strong>
-        </div>
-      `
-      : `
-        <div class="report-month">
-          แสดงข้อมูลตามเงื่อนไขที่ค้นหา
-        </div>
-      `
-    }
-
-
-    <!-- สรุปตัวเลข -->
-
-    <div class="summary">
-
-      <div class="summary-box">
-        <span class="number">
-          ${summary.inspections || 0}
-        </span>
-        <span class="label">
-          ตรวจทั้งหมด
-        </span>
-      </div>
-
-
-      <div class="summary-box good">
-        <span class="number">
-          ${summary.passed || 0}
-        </span>
-        <span class="label">
-          ปกติ
-        </span>
-      </div>
-
-
-      <div class="summary-box bad">
-        <span class="number">
-          ${summary.abnormal || 0}
-        </span>
-        <span class="label">
-          พบข้อบกพร่อง
-        </span>
-      </div>
-
-
-      <div class="summary-box bad">
-        <span class="number">
-          ${summary.defects || 0}
-        </span>
-        <span class="label">
-          ข้อบกพร่อง
-        </span>
-      </div>
-
-
-      <div class="summary-box">
-        <span class="number">
-          ${summary.vehicles || 0}
-        </span>
-        <span class="label">
-          รถที่ตรวจ
-        </span>
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =================================================
-       ⚡ ส่วนตรวจ 3 กะ
-       แยกออกจากรถทั่วไปอย่างชัดเจน
-  ================================================== -->
-
-  <div class="card repair-shift-report">
-
-    <div class="repair-report-header">
-
-      <div>
-        <div class="repair-report-title">
-          ⚡ ตรวจ 3 กะ
-        </div>
-
-        <div class="repair-report-subtitle">
-          เฉพาะรถงานแก้กระแสไฟฟ้าขัดข้อง
-        </div>
-      </div>
-
-      <div class="repair-badge">
-        3 คัน
-      </div>
-
-    </div>
-
-
-    <div class="repair-vehicle-list">
-
-      ${
-        repairSummary.length
-
-        ? repairSummary.map(item => {
-
-            const shift1 =
-              Number(item.shift1 || 0) > 0;
-
-            const shift2 =
-              Number(item.shift2 || 0) > 0;
-
-            const shift3 =
-              Number(item.shift3 || 0) > 0;
-
-            const completed =
-              shift1 &&
-              shift2 &&
-              shift3;
-
-            const total =
-              Number(item.total || 0);
-
-            const completedCount =
-              (shift1 ? 1 : 0) +
-              (shift2 ? 1 : 0) +
-              (shift3 ? 1 : 0);
-
-            return `
-
-              <div class="repair-vehicle-card">
-
-                <!-- ทะเบียน -->
-
-                <div class="repair-vehicle-top">
-
-                  <div class="repair-plate">
-                    🚗 ${escapeHtml(
-                      item.plate || "-"
-                    )}
-                  </div>
-
-                  <div class="
-                    repair-complete-badge
-                    ${completed
-                      ? "complete"
-                      : "incomplete"}
-                  ">
-
-                    ${
-                      completed
-                      ? "✓ ครบ 3 กะ"
-                      : `⚠ ยังไม่ครบ ${completedCount}/3`
-                    }
-
-                  </div>
-
-                </div>
-
-
-                <!-- กะ -->
-
-                <div class="repair-shifts">
-
-                  <div class="
-                    repair-shift
-                    ${shift1
-                      ? "done"
-                      : "missing"}
-                  ">
-
-                    <div class="shift-name">
-                      กะ 1
-                    </div>
-
-                    <div class="shift-status">
-                      ${
-                        shift1
-                        ? "✓ ตรวจแล้ว"
-                        : "— ยังไม่ตรวจ"
-                      }
-                    </div>
-
-                  </div>
-
-
-                  <div class="
-                    repair-shift
-                    ${shift2
-                      ? "done"
-                      : "missing"}
-                  ">
-
-                    <div class="shift-name">
-                      กะ 2
-                    </div>
-
-                    <div class="shift-status">
-                      ${
-                        shift2
-                        ? "✓ ตรวจแล้ว"
-                        : "— ยังไม่ตรวจ"
-                      }
-                    </div>
-
-                  </div>
-
-
-                  <div class="
-                    repair-shift
-                    ${shift3
-                      ? "done"
-                      : "missing"}
-                  ">
-
-                    <div class="shift-name">
-                      กะ 3
-                    </div>
-
-                    <div class="shift-status">
-                      ${
-                        shift3
-                        ? "✓ ตรวจแล้ว"
-                        : "— ยังไม่ตรวจ"
-                      }
-                    </div>
-
-                  </div>
-
-                </div>
-
-
-                <div class="repair-total">
-                  ตรวจทั้งหมด
-                  <strong>${total}</strong>
-                  ครั้ง
-                </div>
-
-              </div>
-
-            `;
-
-          }).join("")
-
-        : `
-
-          <div class="repair-empty">
-            ยังไม่มีข้อมูลรถงานแก้กระแสไฟฟ้าขัดข้อง
-          </div>
-
-        `
-      }
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =================================================
-       🚗 รถทุกคัน
-       แยกจากส่วนตรวจ 3 กะ
-  ================================================== -->
-
-  <div class="card all-vehicle-report">
-
-    <div class="all-vehicle-header">
-
-      <div>
-
-        <div class="all-vehicle-title">
-          🚗 สรุปตามทะเบียนรถ
-        </div>
-
-        <div class="all-vehicle-subtitle">
-          แสดงรถทุกคันที่มีผลการตรวจ
-        </div>
-
-      </div>
-
-      <div class="all-vehicle-badge">
-        ${vehicles.length} คัน
-      </div>
-
-    </div>
-
-
-    <div style="overflow-x:auto;">
-
-      <table class="report-table">
-
-        <thead>
-
-          <tr>
-
-            <th>ทะเบียน</th>
-
-            <th>ตรวจ</th>
-
-            <th>ปกติ</th>
-
-            <th>ไม่ผ่าน</th>
-
-            <th>ข้อบกพร่อง</th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-
-          ${
-            vehicles.length
-
-            ? vehicles.map(item => `
-
-                <tr>
-
-                  <td>
-                    <strong>
-                      ${escapeHtml(
-                        item.plate || "-"
-                      )}
-                    </strong>
-                  </td>
-
-                  <td>
-                    ${item.total || 0}
-                  </td>
-
-                  <td class="report-ok">
-                    ${item.passed || 0}
-                  </td>
-
-                  <td class="${
-                    item.abnormal
-                    ? "report-bad"
-                    : ""
-                  }">
-                    ${item.abnormal || 0}
-                  </td>
-
-                  <td class="${
-                    item.defects
-                    ? "report-bad"
-                    : ""
-                  }">
-                    ${item.defects || 0}
-                  </td>
-
-                </tr>
-
-              `).join("")
-
-            : `
-
-              <tr>
-
-                <td
-                  colspan="5"
-                  style="text-align:center;"
-                >
-                  ไม่มีข้อมูล
-                </td>
-
-              </tr>
-
-            `
-          }
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- =================================================
-       ⚠️ ข้อบกพร่องที่พบบ่อย
-  ================================================== -->
-
-  <div class="card">
-
-    <div class="report-section-title">
-      ⚠️ รายการที่พบข้อบกพร่องบ่อยที่สุด
-    </div>
-
-
-    ${
-      topDefects.length
-
-      ? topDefects.map(
-          (item,index) => `
-
-            <div
-              style="
-                display:flex;
-                justify-content:space-between;
-                gap:10px;
-                padding:8px 0;
-                border-bottom:1px solid #eee;
-                font-size:13px;
-              "
-            >
-
-              <span>
-                ${index + 1}.
-                ${escapeHtml(
-                  item.name || "-"
-                )}
-              </span>
-
-              <strong class="report-bad">
-                ${item.count || 0} ครั้ง
-              </strong>
-
-            </div>
-
-          `
-        ).join("")
-
-      : `
-
-        <div
-          style="
-            color:#777;
-            font-size:13px;
-          "
-        >
-          เดือนนี้ยังไม่พบข้อบกพร่อง
-        </div>
-
-      `
-    }
-
-  </div>
-
-`;
-
-summaryBox.classList.remove(
-  "hidden"
-);
-
-
-    if (!rows.length) {
+      Array.isArray(data)
+        ? data
+        : (
+            data.items ||
+            data.history ||
+            []
+          );
+
+
+    if(!rows.length){
 
       container.innerHTML = `
 
         <div class="card">
-
-          ไม่พบประวัติการตรวจ
-
+          ยังไม่มีประวัติการตรวจ
         </div>
 
       `;
@@ -3296,249 +2480,111 @@ summaryBox.classList.remove(
     }
 
 
-    // =========================
-    // รายการตรวจ
-    // =========================
-
     container.innerHTML =
-      rows.map(
-        (item, index) => {
+      rows
+        .map(item=>{
 
           const bad =
             Number(
-              item.defectCount || 0
+              item.badCount || 0
             ) > 0;
-
-          const details =
-            Array.isArray(
-              item.results
-            )
-              ? item.results
-              : [];
 
 
           return `
 
-            <div
-              class="history-item">
+          <div class="history-item">
 
-              <span
-                class="
-                  history-status
-                  ${bad ? "bad" : "good"}
-                ">
+            <span
+              class="
+                history-status
+                ${bad ? "bad" : "good"}
+              ">
 
-                ${bad
-                  ? "ไม่ผ่าน"
-                  : "ผ่าน"}
+              ${bad
+                ? "ไม่ผ่าน"
+                : "ผ่าน"}
 
-              </span>
+            </span>
 
 
-              <strong>
-
-                🚗 ทะเบียน:
-                ${escapeHtml(
-                  item.plate || "-"
-                )}
-
-              </strong>
-
-              <br>
-
-              📅 วันที่:
+            <strong>
+              ทะเบียน:
               ${escapeHtml(
-                item.date || "-"
+                item.plate || "-"
               )}
+            </strong>
 
-              <br>
+            <br>
 
-              🚙 ประเภทรถ:
+            วันที่:
+            ${escapeHtml(
+              item.date ||
+              item.inspectionDate ||
+              "-"
+            )}
+
+            <br>
+
+            ประเภทรถ:
+            ${escapeHtml(
+              item.type || "-"
+            )}
+
+            <br>
+
+            ลักษณะการใช้งาน:
+            ${escapeHtml(
+              item.usageType || "-"
+            )}
+
+            <br>
+
+            ${
+              item.shift
+              ?
+              `
+              กะ:
               ${escapeHtml(
-                item.type || "-"
-              )}
-
-              <br>
-
-              👤 ผู้ตรวจ:
-              ${escapeHtml(
-                item.inspector || "-"
-              )}
-
-              <br>
-
-              🛣️ เลขไมล์:
-              ${escapeHtml(
-                String(
-                  item.mileage || "-"
-                )
-              )}
-
-              <br>
-
-              📋 ลักษณะการใช้งาน:
-              ${escapeHtml(
-                item.usageType || "-"
-              )}
-
-              ${
                 item.shift
-                ? `
-                  <br>
-                  🕐 กะ:
-                  ${escapeHtml(
-                    item.shift
-                  )}
-                `
-                : ""
-              }
-
-              <br>
-
-              📊 ผลรวม:
-              ${escapeHtml(
-                item.status || "-"
               )}
-
               <br>
+              `
+              :
+              ""
+            }
 
-              ⚠️ ข้อบกพร่อง:
-              ${item.defectCount || 0}
+            เลขไมล์:
+            ${escapeHtml(
+              String(
+                item.mileage ??
+                "-"
+              )
+            )}
 
-              ${
-                item.notes
-                ? `
-                  <br>
-                  📝 หมายเหตุ:
-                  ${escapeHtml(
-                    item.notes
-                  )}
-                `
-                : ""
-              }
+            <br>
 
+            ผู้ตรวจ:
+            ${escapeHtml(
+              item.inspector ||
+              "-"
+            )}
 
-              <!-- รายละเอียดแต่ละข้อ -->
-
-              <div
-                style="
-                  margin-top:12px;
-                  border-top:1px solid #e5ddea;
-                  padding-top:10px;
-                ">
-
-                <strong>
-                  รายละเอียดการตรวจ
-                </strong>
-
-                <div
-                  style="
-                    margin-top:8px;
-                  ">
-
-                  ${
-                    details.length
-                    ? details.map(
-                        (detail, i) => `
-
-                          <div
-                            style="
-                              padding:7px 9px;
-                              margin-bottom:5px;
-                              border-radius:9px;
-                              background:
-                                ${
-                                  detail.result === "ไม่ผ่าน"
-                                  ? "#fdebed"
-                                  :
-                                  detail.result === "ไม่เกี่ยวข้อง"
-                                  ? "#eeeeee"
-                                  : "#e8f6ef"
-                                };
-                              color:
-                                ${
-                                  detail.result === "ไม่ผ่าน"
-                                  ? "#dc3545"
-                                  :
-                                  detail.result === "ไม่เกี่ยวข้อง"
-                                  ? "#666"
-                                  : "#168653"
-                                };
-                            ">
-
-                            <strong>
-                              ${i + 1}.
-                            </strong>
-
-                            ${escapeHtml(
-                              detail.name || "-"
-                            )}
-
-                            <br>
-
-                            <span
-                              style="
-                                font-weight:800;
-                              ">
-
-                              ${detail.result === "ผ่าน"
-                                ? "✓ ผ่าน"
-                                : detail.result === "ไม่ผ่าน"
-                                ? "✕ ไม่ผ่าน"
-                                : "⊖ ไม่เกี่ยวข้อง"}
-
-                            </span>
-
-                          </div>
-
-                        `
-                      ).join("")
-                    : `
-                      <div
-                        style="
-                          color:#777;
-                          font-size:12px;
-                        ">
-
-                        ไม่มีรายละเอียดผลตรวจ
-                        สำหรับรายการนี้
-
-                      </div>
-                    `
-                  }
-
-                </div>
-
-              </div>
-
-            </div>
+          </div>
 
           `;
 
-        }
-      ).join("");
+        })
+        .join("");
 
 
-  } catch (error) {
-
-    console.error(error);
-
-    summaryBox.classList.add(
-      "hidden"
-    );
+  }catch(error){
 
     container.innerHTML = `
 
       <div class="card">
 
-        ❌ ไม่สามารถโหลดประวัติได้
-
-        <br><br>
-
-        ${escapeHtml(
-          error.message ||
-          "กรุณาตรวจสอบ API"
-        )}
+        ไม่สามารถโหลดประวัติได้
+        กรุณาตรวจสอบ API
 
       </div>
 
@@ -3547,6 +2593,83 @@ summaryBox.classList.remove(
   }
 
 }
+
+
+async function loadVehicleFromQR(plate){
+
+  const select = document.getElementById("plate");
+  if(!select) return;
+
+  const qrPlate = String(plate || "").trim();
+  if(!qrPlate) return;
+
+  try{
+    const response = await fetch(
+      "/api/vehicle?plate=" + encodeURIComponent(qrPlate)
+    );
+
+    if(!response.ok) throw new Error("ไม่พบทะเบียน " + qrPlate);
+
+    const data = await response.json();
+    const vehicle = data.vehicle || data;
+    const realPlate = String(vehicle.plate || qrPlate).trim();
+    const realType = String(vehicle.type || "").trim();
+
+    if(!realType){
+      throw new Error("ไม่พบประเภทรถของ " + realPlate);
+    }
+
+    const button = [...document.querySelectorAll(".type-button")]
+      .find(x => String(x.dataset.type || "").trim() === realType);
+
+    if(!button){
+      throw new Error("ไม่พบปุ่มประเภทรถ " + realType);
+    }
+
+    // ตั้งประเภทรถจากข้อมูลจริงใน Google Sheet
+    vehicleType = realType;
+    document.querySelectorAll(".type-button")
+      .forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    // โหลดรายการตรวจและผู้ตรวจ
+    await loadChecklist();
+    await loadInspectors(realType);
+
+    // โหลดทะเบียนตามประเภทก่อน
+    await loadVehiclePlates(realType);
+
+    // ใช้ทะเบียนจาก QR เป็นค่าหลัก
+    let option = [...select.options]
+      .find(o => String(o.value).trim() === realPlate);
+
+    // ถ้า Google Sheet API ตามประเภทไม่ส่งทะเบียนนี้มา
+    // ให้เพิ่มทะเบียนจากผล API โดยตรง เพื่อไม่ให้ QR ค้างที่ช่องว่าง
+    if(!option){
+      option = document.createElement("option");
+      option.value = realPlate;
+      option.textContent = realPlate;
+      select.appendChild(option);
+    }
+
+    select.disabled = false;
+    select.value = realPlate;
+
+    // ตั้งลักษณะการใช้งานตามทะเบียน
+    setUsageByPlate(realPlate);
+
+    // โหลดรายละเอียดรถทันที
+    await loadVehicle();
+
+  }catch(error){
+    console.error("QR Vehicle Error:", error);
+    select.disabled = false;
+    select.innerHTML = `<option value="">ไม่พบทะเบียน ${escapeHtml(qrPlate)}</option>`;
+    alert("ไม่สามารถโหลดข้อมูลรถทะเบียน " + qrPlate + " ได้\n" + error.message);
+  }
+
+}
+
 
 /* ==================================================
    ESCAPE HTML
@@ -3586,66 +2709,34 @@ document
     "change",
     loadVehicle
   );
+
+
+document
+  .getElementById("plate")
+  .addEventListener(
+    "blur",
+    loadVehicle
+  );
+
+
 /* ==================================================
    START
 ================================================== */
 
 usageChanged();
 
-// ยังไม่โหลดทะเบียน/ผู้ตรวจจนกว่าจะเลือกประเภทรถ
-document.getElementById("plate").disabled = true;
-document.getElementById("inspector").disabled = true;
-document.getElementById("plate").innerHTML =
-  '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
-document.getElementById("inspector").innerHTML =
-  '<option value="">-- กรุณาเลือกประเภทรถก่อน --</option>';
+// โหลดผู้ตรวจและทะเบียนของประเภทรถเริ่มต้น
+loadInspectors(vehicleType);
+loadVehiclePlates(vehicleType);
+loadChecklist();
 
 const urlParams = new URLSearchParams(window.location.search);
 const qrPlate = urlParams.get("plate");
 
 if (qrPlate) {
 
-  const plate = qrPlate.trim();
-
-  fetch("/api/vehicle?plate=" + encodeURIComponent(plate))
-    .then(response => response.json())
-    .then(data => {
-
-      const vehicle = data.vehicle || data;
-
-      if (!vehicle || !vehicle.type) {
-        alert("ไม่พบข้อมูลรถทะเบียน " + plate);
-        return;
-      }
-
-      const buttons = document.querySelectorAll(".type-button");
-
-      buttons.forEach(button => {
-
-        if (button.dataset.type === vehicle.type) {
-
-  selectVehicleType(
-    vehicle.type,
-    button,
-    plate
-  );
-
-}
-
-      });
-
-         })
-    .catch(error => {
-
-      console.error("QR Vehicle Error:", error);
-
-      alert("ไม่สามารถโหลดข้อมูลรถจาก QR ได้");
-
-    });
-
-} else {
-
-  loadChecklist();
+  // QR ใช้ทะเบียนที่ส่งมาเป็นหลัก
+  loadVehicleFromQR(qrPlate.trim());
 
 }
 
