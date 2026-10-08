@@ -781,6 +781,259 @@ select:disabled{
   display:block;
   margin:0 auto 8px;
 }
+  /* ==================================================
+   REPORT - แยกส่วน 3 กะ / รถทั้งหมด
+================================================== */
+
+.report-main-card {
+  margin-bottom: 18px;
+}
+
+.report-month {
+  color: #777;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+
+/* =========================
+   ⚡ ตรวจ 3 กะ
+========================= */
+
+.repair-shift-report {
+  margin-top: 18px;
+  margin-bottom: 18px;
+
+  border: 2px solid #eadcf2;
+  border-radius: 16px;
+
+  background: #fcf9fe;
+}
+
+.repair-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #eadcf2;
+}
+
+.repair-report-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #4b0874;
+}
+
+.repair-report-subtitle {
+  margin-top: 3px;
+
+  font-size: 13px;
+  color: #777;
+}
+
+.repair-badge {
+  background: #4b0874;
+  color: white;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.repair-vehicle-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 16px;
+}
+
+.repair-vehicle-card {
+  background: white;
+
+  border: 1px solid #e5d9eb;
+
+  border-radius: 12px;
+
+  padding: 14px;
+}
+
+.repair-vehicle-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+}
+
+.repair-plate {
+  font-weight: 800;
+
+  color: #4b0874;
+
+  font-size: 15px;
+}
+
+.repair-complete-badge {
+  padding: 5px 8px;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.repair-complete-badge.complete {
+  background: #e8f6ef;
+  color: #168653;
+}
+
+.repair-complete-badge.incomplete {
+  background: #fff0f0;
+  color: #dc3545;
+}
+
+.repair-shifts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 6px;
+}
+
+.repair-shift {
+  text-align: center;
+
+  padding: 9px 4px;
+
+  border-radius: 9px;
+}
+
+.repair-shift.done {
+  background: #e8f6ef;
+  color: #168653;
+}
+
+.repair-shift.missing {
+  background: #fff0f0;
+  color: #dc3545;
+}
+
+.shift-name {
+  font-weight: 800;
+
+  font-size: 12px;
+}
+
+.shift-status {
+  margin-top: 3px;
+
+  font-size: 10px;
+}
+
+.repair-total {
+  margin-top: 10px;
+
+  text-align: right;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+.repair-total strong {
+  color: #4b0874;
+
+  font-size: 13px;
+}
+
+.repair-empty {
+  padding: 25px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   🚗 รถทุกคัน
+========================= */
+
+.all-vehicle-report {
+  margin-top: 18px;
+
+  border-radius: 16px;
+}
+
+.all-vehicle-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 14px;
+}
+
+.all-vehicle-title {
+  font-size: 19px;
+
+  font-weight: 800;
+
+  color: #333;
+}
+
+.all-vehicle-subtitle {
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  color: #777;
+}
+
+.all-vehicle-badge {
+  background: #f0ebf4;
+
+  color: #4b0874;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   หน้าจอเล็ก
+========================= */
+
+@media (max-width: 900px) {
+
+  .repair-vehicle-list {
+    grid-template-columns: 1fr;
+  }
+
+}
   
 </style>
 </head>
@@ -2563,9 +2816,13 @@ const repairSummary =
     // สรุป
     // =========================
 
-    summaryBox.innerHTML = `
+   summaryBox.innerHTML = `
 
-  <div class="card">
+  <!-- =================================================
+       📊 สรุปรายงานประจำเดือน
+  ================================================== -->
+
+  <div class="card report-main-card">
 
     <div class="section-title">
       📊 สรุปรายงานประจำเดือน
@@ -2574,264 +2831,288 @@ const repairSummary =
     ${
       month
       ? `
-        <div
-          style="
-            color:#777;
-            font-size:13px;
-            margin-bottom:10px;
-          ">
-
+        <div class="report-month">
           เดือน:
-          <strong>
-            ${month}
-          </strong>
-
+          <strong>${escapeHtml(month)}</strong>
         </div>
       `
-      : ''
+      : `
+        <div class="report-month">
+          แสดงข้อมูลตามเงื่อนไขที่ค้นหา
+        </div>
+      `
     }
+
+
+    <!-- สรุปตัวเลข -->
 
     <div class="summary">
 
       <div class="summary-box">
-
         <span class="number">
           ${summary.inspections || 0}
         </span>
-
         <span class="label">
           ตรวจทั้งหมด
         </span>
-
       </div>
 
 
       <div class="summary-box good">
-
         <span class="number">
           ${summary.passed || 0}
         </span>
-
         <span class="label">
           ปกติ
         </span>
-
       </div>
 
 
       <div class="summary-box bad">
-
         <span class="number">
           ${summary.abnormal || 0}
         </span>
-
         <span class="label">
           พบข้อบกพร่อง
         </span>
-
       </div>
 
 
       <div class="summary-box bad">
-
         <span class="number">
           ${summary.defects || 0}
         </span>
-
         <span class="label">
           ข้อบกพร่อง
         </span>
-
       </div>
 
 
       <div class="summary-box">
-
         <span class="number">
           ${summary.vehicles || 0}
         </span>
-
         <span class="label">
           รถที่ตรวจ
         </span>
+      </div>
 
+    </div>
+
+  </div>
+
+
+
+  <!-- =================================================
+       ⚡ ส่วนตรวจ 3 กะ
+       แยกออกจากรถทั่วไปอย่างชัดเจน
+  ================================================== -->
+
+  <div class="card repair-shift-report">
+
+    <div class="repair-report-header">
+
+      <div>
+        <div class="repair-report-title">
+          ⚡ ตรวจ 3 กะ
+        </div>
+
+        <div class="repair-report-subtitle">
+          เฉพาะรถงานแก้กระแสไฟฟ้าขัดข้อง
+        </div>
+      </div>
+
+      <div class="repair-badge">
+        3 คัน
       </div>
 
     </div>
 
 
-    <!-- ======================
-         3 คันงานแก้ไฟ
-    ======================= -->
+    <div class="repair-vehicle-list">
 
-    <div class="report-section-title">
+      ${
+        repairSummary.length
 
-      ⚡ รถงานแก้กระแสไฟฟ้าขัดข้อง
-      — สรุปตามกะ
+        ? repairSummary.map(item => {
 
-    </div>
+            const shift1 =
+              Number(item.shift1 || 0) > 0;
 
+            const shift2 =
+              Number(item.shift2 || 0) > 0;
 
-    <div style="overflow-x:auto;">
+            const shift3 =
+              Number(item.shift3 || 0) > 0;
 
-      <table class="report-table">
+            const completed =
+              shift1 &&
+              shift2 &&
+              shift3;
 
-        <thead>
+            const total =
+              Number(item.total || 0);
 
-          <tr>
+            const completedCount =
+              (shift1 ? 1 : 0) +
+              (shift2 ? 1 : 0) +
+              (shift3 ? 1 : 0);
 
-            <th>ทะเบียน</th>
+            return `
 
-            <th>กะ 1</th>
+              <div class="repair-vehicle-card">
 
-            <th>กะ 2</th>
+                <!-- ทะเบียน -->
 
-            <th>กะ 3</th>
+                <div class="repair-vehicle-top">
 
-            <th>รวม</th>
+                  <div class="repair-plate">
+                    🚗 ${escapeHtml(
+                      item.plate || "-"
+                    )}
+                  </div>
 
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${
-            repairSummary.length
-
-            ? repairSummary.map(
-                item => {
-
-                  const missing =
-                    [];
-
-                  if (
-                    item.shift1 === 0
-                  ) {
-                    missing.push(
-                      "กะ 1"
-                    );
-                  }
-
-                  if (
-                    item.shift2 === 0
-                  ) {
-                    missing.push(
-                      "กะ 2"
-                    );
-                  }
-
-                  if (
-                    item.shift3 === 0
-                  ) {
-                    missing.push(
-                      "กะ 3"
-                    );
-                  }
-
-                  return `
-
-                    <tr>
-
-                      <td>
-                        ${escapeHtml(
-                          item.plate
-                        )}
-                      </td>
-
-                      <td class="${
-                        item.shift1
-                        ? "report-ok"
-                        : "report-warning"
-                      }">
-
-                        ${item.shift1}
-
-                      </td>
-
-                      <td class="${
-                        item.shift2
-                        ? "report-ok"
-                        : "report-warning"
-                      }">
-
-                        ${item.shift2}
-
-                      </td>
-
-                      <td class="${
-                        item.shift3
-                        ? "report-ok"
-                        : "report-warning"
-                      }">
-
-                        ${item.shift3}
-
-                      </td>
-
-                      <td>
-
-                        ${
-                          item.total
-                        }
-
-                      </td>
-
-                    </tr>
+                  <div class="
+                    repair-complete-badge
+                    ${completed
+                      ? "complete"
+                      : "incomplete"}
+                  ">
 
                     ${
-                      missing.length
-                      ? `
-                        <tr>
-
-                          <td
-                            colspan="5"
-                            class="report-warning">
-
-                            ⚠️ ยังไม่มีข้อมูล
-                            ${missing.join(", ")}
-
-                          </td>
-
-                        </tr>
-                      `
-                      : ""
+                      completed
+                      ? "✓ ครบ 3 กะ"
+                      : `⚠ ยังไม่ครบ ${completedCount}/3`
                     }
 
-                  `;
+                  </div>
 
-                }
-              ).join("")
+                </div>
 
-            : `
 
-              <tr>
+                <!-- กะ -->
 
-                <td colspan="5">
+                <div class="repair-shifts">
 
-                  ไม่มีข้อมูล
+                  <div class="
+                    repair-shift
+                    ${shift1
+                      ? "done"
+                      : "missing"}
+                  ">
 
-                </td>
+                    <div class="shift-name">
+                      กะ 1
+                    </div>
 
-              </tr>
+                    <div class="shift-status">
+                      ${
+                        shift1
+                        ? "✓ ตรวจแล้ว"
+                        : "— ยังไม่ตรวจ"
+                      }
+                    </div>
 
-            `
-          }
+                  </div>
 
-        </tbody>
 
-      </table>
+                  <div class="
+                    repair-shift
+                    ${shift2
+                      ? "done"
+                      : "missing"}
+                  ">
+
+                    <div class="shift-name">
+                      กะ 2
+                    </div>
+
+                    <div class="shift-status">
+                      ${
+                        shift2
+                        ? "✓ ตรวจแล้ว"
+                        : "— ยังไม่ตรวจ"
+                      }
+                    </div>
+
+                  </div>
+
+
+                  <div class="
+                    repair-shift
+                    ${shift3
+                      ? "done"
+                      : "missing"}
+                  ">
+
+                    <div class="shift-name">
+                      กะ 3
+                    </div>
+
+                    <div class="shift-status">
+                      ${
+                        shift3
+                        ? "✓ ตรวจแล้ว"
+                        : "— ยังไม่ตรวจ"
+                      }
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="repair-total">
+                  ตรวจทั้งหมด
+                  <strong>${total}</strong>
+                  ครั้ง
+                </div>
+
+              </div>
+
+            `;
+
+          }).join("")
+
+        : `
+
+          <div class="repair-empty">
+            ยังไม่มีข้อมูลรถงานแก้กระแสไฟฟ้าขัดข้อง
+          </div>
+
+        `
+      }
 
     </div>
 
+  </div>
 
-    <!-- ======================
-         รถทุกคัน
-    ======================= -->
 
-    <div class="report-section-title">
 
-      🚗 สรุปตามทะเบียนรถ
+  <!-- =================================================
+       🚗 รถทุกคัน
+       แยกจากส่วนตรวจ 3 กะ
+  ================================================== -->
+
+  <div class="card all-vehicle-report">
+
+    <div class="all-vehicle-header">
+
+      <div>
+
+        <div class="all-vehicle-title">
+          🚗 สรุปตามทะเบียนรถ
+        </div>
+
+        <div class="all-vehicle-subtitle">
+          แสดงรถทุกคันที่มีผลการตรวจ
+        </div>
+
+      </div>
+
+      <div class="all-vehicle-badge">
+        ${vehicles.length} คัน
+      </div>
 
     </div>
 
@@ -2858,65 +3139,60 @@ const repairSummary =
 
         </thead>
 
+
         <tbody>
 
           ${
             vehicles.length
 
-            ? vehicles.map(
-                item => `
+            ? vehicles.map(item => `
 
-                  <tr>
+                <tr>
 
-                    <td>
+                  <td>
+                    <strong>
                       ${escapeHtml(
-                        item.plate
+                        item.plate || "-"
                       )}
-                    </td>
+                    </strong>
+                  </td>
 
-                    <td>
-                      ${item.total}
-                    </td>
+                  <td>
+                    ${item.total || 0}
+                  </td>
 
-                    <td
-                      class="report-ok">
+                  <td class="report-ok">
+                    ${item.passed || 0}
+                  </td>
 
-                      ${item.passed}
+                  <td class="${
+                    item.abnormal
+                    ? "report-bad"
+                    : ""
+                  }">
+                    ${item.abnormal || 0}
+                  </td>
 
-                    </td>
+                  <td class="${
+                    item.defects
+                    ? "report-bad"
+                    : ""
+                  }">
+                    ${item.defects || 0}
+                  </td>
 
-                    <td
-                      class="${
-                        item.abnormal
-                        ? "report-bad"
-                        : ""
-                      }">
+                </tr>
 
-                      ${item.abnormal}
-
-                    </td>
-
-                    <td
-                      class="${
-                        item.defects
-                        ? "report-bad"
-                        : ""
-                      }">
-
-                      ${item.defects}
-
-                    </td>
-
-                  </tr>
-
-                `
-              ).join("")
+              `).join("")
 
             : `
 
               <tr>
 
-                <td colspan="5">
+                <td
+                  colspan="5"
+                  style="text-align:center;"
+                >
                   ไม่มีข้อมูล
                 </td>
 
@@ -2931,73 +3207,67 @@ const repairSummary =
 
     </div>
 
+  </div>
 
-    <!-- ======================
-         ข้อผิดพลาดที่พบบ่อย
-    ======================= -->
+
+
+  <!-- =================================================
+       ⚠️ ข้อบกพร่องที่พบบ่อย
+  ================================================== -->
+
+  <div class="card">
 
     <div class="report-section-title">
-
       ⚠️ รายการที่พบข้อบกพร่องบ่อยที่สุด
-
     </div>
 
 
-    <div>
+    ${
+      topDefects.length
 
-      ${
-        topDefects.length
+      ? topDefects.map(
+          (item,index) => `
 
-        ? topDefects.map(
-            (item,index) => `
+            <div
+              style="
+                display:flex;
+                justify-content:space-between;
+                gap:10px;
+                padding:8px 0;
+                border-bottom:1px solid #eee;
+                font-size:13px;
+              "
+            >
 
-              <div
-                style="
-                  display:flex;
-                  justify-content:space-between;
-                  gap:10px;
-                  padding:8px 0;
-                  border-bottom:1px solid #eee;
-                  font-size:13px;
-                ">
+              <span>
+                ${index + 1}.
+                ${escapeHtml(
+                  item.name || "-"
+                )}
+              </span>
 
-                <span>
+              <strong class="report-bad">
+                ${item.count || 0} ครั้ง
+              </strong>
 
-                  ${index + 1}.
-                  ${escapeHtml(
-                    item.name
-                  )}
+            </div>
 
-                </span>
+          `
+        ).join("")
 
-                <strong
-                  class="report-bad">
+      : `
 
-                  ${item.count} ครั้ง
+        <div
+          style="
+            color:#777;
+            font-size:13px;
+          "
+        >
+          เดือนนี้ยังไม่พบข้อบกพร่อง
+        </div>
 
-                </strong>
-
-              </div>
-
-            `
-          ).join("")
-
-        : `
-
-          <div
-            style="
-              color:#777;
-              font-size:13px;
-            ">
-
-            เดือนนี้ยังไม่พบข้อบกพร่อง
-
-          </div>
-
-        `
-      }
-
-    </div>
+      `
+    }
 
   </div>
 
