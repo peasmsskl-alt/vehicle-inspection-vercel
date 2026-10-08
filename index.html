@@ -1656,7 +1656,7 @@ function showTab(tab){
    VEHICLE TYPE
 ================================================== */
 
-function selectVehicleType(type,button){
+function selectVehicleType(type,button,selectedPlate = ""){
 
   vehicleType = type;
 
@@ -1694,7 +1694,7 @@ function selectVehicleType(type,button){
 
   // โหลดข้อมูล
   loadChecklist();
-  loadVehiclePlates(type);
+  loadVehiclePlates(type, selectedPlate);
   loadInspectors(type);
 }
 
@@ -3624,29 +3624,17 @@ if (qrPlate) {
 
         if (button.dataset.type === vehicle.type) {
 
-          selectVehicleType(
-            vehicle.type,
-            button
-          );
+  selectVehicleType(
+    vehicle.type,
+    button,
+    plate
+  );
 
-        }
+}
 
       });
 
-      loadVehiclePlates(vehicle.type, plate)
-  .then(() => {
-
-    const plateSelect =
-      document.getElementById("plate");
-
-    plateSelect.value = plate;
-
-    loadVehicle();
-
-    setUsageByPlate(plate);
-
-  });
-    })
+         })
     .catch(error => {
 
       console.error("QR Vehicle Error:", error);
