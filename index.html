@@ -3633,30 +3633,19 @@ if (qrPlate) {
 
       });
 
-      setTimeout(() => {
+      loadVehiclePlates(vehicle.type, plate)
+  .then(() => {
 
-        const plateSelect =
-          document.getElementById("plate");
+    const plateSelect =
+      document.getElementById("plate");
 
-        const option =
-          [...plateSelect.options]
-            .find(
-              option =>
-                option.value.trim() === plate
-            );
+    plateSelect.value = plate;
 
-        if (option) {
+    loadVehicle();
 
-          plateSelect.value = option.value;
+    setUsageByPlate(plate);
 
-          loadVehicle();
-
-          setUsageByPlate(option.value);
-
-        }
-
-      }, 500);
-
+  });
     })
     .catch(error => {
 
