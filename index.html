@@ -1656,7 +1656,7 @@ function showTab(tab){
    VEHICLE TYPE
 ================================================== */
 
-function selectVehicleType(type,button,selectedPlate = ""){
+async function selectVehicleType(type,button,selectedPlate = ""){
 
   vehicleType = type;
 
@@ -1694,8 +1694,29 @@ function selectVehicleType(type,button,selectedPlate = ""){
 
   // โหลดข้อมูล
   loadChecklist();
-  loadVehiclePlates(type, selectedPlate);
+  await loadVehiclePlates(type, selectedPlate);
   loadInspectors(type);
+
+  if(selectedPlate){
+    const wanted = String(selectedPlate).trim();
+
+    let found = [...plateSelect.options]
+      .find(option => option.value.trim() === wanted);
+
+    if(!found && wanted){
+      found = document.createElement("option");
+      found.value = wanted;
+      found.textContent = wanted;
+      plateSelect.appendChild(found);
+    }
+
+    if(found){
+      plateSelect.value = found.value;
+    }
+
+    setUsageByPlate(wanted);
+    await loadVehicle();
+  }
 }
 
 /* ==================================================
@@ -1895,6 +1916,13 @@ async function loadVehiclePlates(type, selectedPlate = ""){
       const wanted = String(selectedPlate).trim();
       const found = [...select.options]
         .find(option => option.value === wanted);
+
+      if(!found && wanted){
+        found = document.createElement("option");
+        found.value = wanted;
+        found.textContent = wanted;
+        select.appendChild(found);
+      }
 
       if(found){
         select.value = found.value;
@@ -3620,19 +3648,22 @@ if (qrPlate) {
 
       const buttons = document.querySelectorAll(".type-button");
 
-      buttons.forEach(button => {
+      const button = [...buttons]
+        .find(button =>
+          String(button.dataset.type || "").trim() ===
+          String(vehicle.type || "").trim()
+        );
 
-        if (button.dataset.type === vehicle.type) {
+      if(!button){
+        alert("ไม่พบปุ่มประเภทรถ: " + vehicle.type);
+        return;
+      }
 
-  selectVehicleType(
-    vehicle.type,
-    button,
-    plate
-  );
-
-}
-
-      });
+      selectVehicleType(
+        vehicle.type,
+        button,
+        plate
+      );
 
          })
     .catch(error => {
