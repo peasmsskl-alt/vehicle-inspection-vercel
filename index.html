@@ -806,7 +806,7 @@ select:disabled{
   เลขทะเบียน <span class="required">*</span>
 </label>
 
-<select id="plate" onchange="loadVehicle()" disabled>
+<select id="plate" onchange="loadVehicle(); setUsageByPlate(this.value)" disabled>
   <option value="">-- กรุณาเลือกประเภทรถก่อน --</option>
 </select>
 
@@ -1359,9 +1359,11 @@ function selectVehicleType(type,button){
 
   button.classList.add("active");
 
-  // เมื่อเลือกประเภทรถแล้ว จึงเปิดให้เลือกทะเบียนและผู้ตรวจ
-  const plateSelect = document.getElementById("plate");
-  const inspectorSelect = document.getElementById("inspector");
+  const plateSelect =
+    document.getElementById("plate");
+
+  const inspectorSelect =
+    document.getElementById("inspector");
 
   plateSelect.disabled = false;
   inspectorSelect.disabled = false;
@@ -1370,15 +1372,22 @@ function selectVehicleType(type,button){
   plateSelect.value = "";
   inspectorSelect.value = "";
 
-  document.getElementById("vehicleInfo").classList.add("hidden");
-  document.getElementById("vehicleInfo").innerHTML = "";
+  document
+    .getElementById("vehicleInfo")
+    .classList.add("hidden");
 
-  // โหลดรายการตามประเภทรถ
+  document
+    .getElementById("vehicleInfo")
+    .innerHTML = "";
+
+  // ตั้งค่า "ลักษณะการใช้งาน" เป็นงานทั่วไปก่อน
+  setUsageByPlate("");
+
+  // โหลดข้อมูล
   loadChecklist();
   loadVehiclePlates(type);
   loadInspectors(type);
 }
-
 
 /* ==================================================
    USAGE
@@ -1415,6 +1424,50 @@ function usageChanged(){
       usage !== "งานแก้กระแสไฟฟ้าขัดข้อง"
     );
 
+}
+
+  function setUsageByPlate(plate){
+
+  const repairVehicles = [
+    "81-9152 สข",
+    "3ฒง 9030 กทม",
+    "82-8020 สข"
+  ];
+
+  const repair =
+    repairVehicles.includes(
+      String(plate || "").trim()
+    );
+
+  const repairRadio =
+    document.querySelector(
+      'input[name="usageType"][value="งานแก้กระแสไฟฟ้าขัดข้อง"]'
+    );
+
+  const generalRadio =
+    document.querySelector(
+      'input[name="usageType"][value="งานทั่วไป"]'
+    );
+
+  if(!repairRadio || !generalRadio) return;
+
+  if(repair){
+
+    repairRadio.checked = true;
+    generalRadio.checked = false;
+
+  }else{
+
+    repairRadio.checked = false;
+    generalRadio.checked = true;
+
+  }
+
+  // ล็อกไม่ให้ผู้ตรวจเปลี่ยนเอง
+  repairRadio.disabled = true;
+  generalRadio.disabled = true;
+
+  usageChanged();
 }
 
 
