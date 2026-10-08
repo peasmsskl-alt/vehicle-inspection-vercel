@@ -1944,6 +1944,13 @@ async function loadVehiclePlates(type, selectedPlate = ""){
    LOAD VEHICLE
 ================================================== */
 
+function getCorrectVehicleType(plate, apiType){
+  const p = String(plate || "").trim();
+  // ทะเบียน 82-7265 สข เป็นรถเครน/รถกระเช้า
+  if (p === "82-7265 สข") return "รถเครน/รถกระเช้า";
+  return apiType;
+}
+
 async function loadVehicle(){
 
   const plate =
@@ -1966,6 +1973,10 @@ async function loadVehicle(){
 
     const data = await response.json();
     const vehicle = data.vehicle || data;
+
+    if(vehicle){
+      vehicle.type = getCorrectVehicleType(plate, vehicle.type);
+    }
 
     if(!vehicle){
       throw new Error("ไม่พบข้อมูลรถ");
@@ -3640,6 +3651,10 @@ if (qrPlate) {
     .then(data => {
 
       const vehicle = data.vehicle || data;
+
+      if (vehicle) {
+        vehicle.type = getCorrectVehicleType(plate, vehicle.type);
+      }
 
       if (!vehicle || !vehicle.type) {
         alert("ไม่พบข้อมูลรถทะเบียน " + plate);
