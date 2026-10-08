@@ -3602,9 +3602,16 @@ document.getElementById("inspector").innerHTML =
 const urlParams = new URLSearchParams(window.location.search);
 const qrPlate = urlParams.get("plate");
 
-if(qrPlate){
-  // QR สามารถเลือกประเภทจากทะเบียนให้อัตโนมัติ
+if (qrPlate) {
+
+  // เปิดจาก QR Code
   loadVehicleFromQR(qrPlate.trim());
+
+} else {
+
+  // เปิดเว็บปกติ
+  loadChecklist();
+
 }
 
 </script>
