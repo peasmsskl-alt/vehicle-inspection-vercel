@@ -551,6 +551,62 @@ textarea{
   background:var(--red-light);
   color:var(--red);
 }
+  /* =========================
+   MONTHLY REPORT
+========================= */
+
+.monthly-report{
+  margin-top:12px;
+}
+
+.report-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+  background:white;
+}
+
+.report-table th{
+  background:var(--purple-light);
+  color:var(--purple);
+  padding:9px 6px;
+  border-bottom:1px solid #ddd;
+  text-align:center;
+}
+
+.report-table td{
+  padding:9px 6px;
+  border-bottom:1px solid #eee;
+  text-align:center;
+}
+
+.report-table td:first-child{
+  text-align:left;
+  font-weight:700;
+}
+
+.report-ok{
+  color:var(--green);
+  font-weight:800;
+}
+
+.report-bad{
+  color:var(--red);
+  font-weight:800;
+}
+
+.report-warning{
+  background:#fff8e8;
+  color:#a56a00;
+  font-weight:800;
+}
+
+.report-section-title{
+  font-size:14px;
+  font-weight:800;
+  color:var(--purple);
+  margin:15px 0 8px;
+}
 
 .hidden{
   display:none !important;
@@ -2493,6 +2549,15 @@ async function loadHistory(){
     const summary =
       data.summary || {};
 
+    const vehicles =
+  data.vehicles || [];
+
+const topDefects =
+  data.topDefects || [];
+
+const repairSummary =
+  data.repairSummary || [];
+
 
     // =========================
     // สรุป
@@ -2500,68 +2565,447 @@ async function loadHistory(){
 
     summaryBox.innerHTML = `
 
-      <div class="card">
+  <div class="card">
 
-        <div class="section-title">
-          📊 สรุปผลการตรวจ
-        </div>
+    <div class="section-title">
+      📊 สรุปรายงานประจำเดือน
+    </div>
 
-        <div class="summary">
+    ${
+      month
+      ? `
+        <div
+          style="
+            color:#777;
+            font-size:13px;
+            margin-bottom:10px;
+          ">
 
-          <div class="summary-box">
-            <span class="number">
-              ${summary.inspections || 0}
-            </span>
-            <span class="label">
-              ครั้งที่ตรวจ
-            </span>
-          </div>
-
-          <div class="summary-box good">
-            <span class="number">
-              ${summary.passed || 0}
-            </span>
-            <span class="label">
-              ปกติ
-            </span>
-          </div>
-
-          <div class="summary-box bad">
-            <span class="number">
-              ${summary.abnormal || 0}
-            </span>
-            <span class="label">
-              พบข้อบกพร่อง
-            </span>
-          </div>
-
-          <div class="summary-box bad">
-            <span class="number">
-              ${summary.defects || 0}
-            </span>
-            <span class="label">
-              ข้อบกพร่อง
-            </span>
-          </div>
-
-          <div class="summary-box">
-            <span class="number">
-              ${summary.vehicles || 0}
-            </span>
-            <span class="label">
-              รถที่ตรวจ
-            </span>
-          </div>
+          เดือน:
+          <strong>
+            ${month}
+          </strong>
 
         </div>
+      `
+      : ''
+    }
+
+    <div class="summary">
+
+      <div class="summary-box">
+
+        <span class="number">
+          ${summary.inspections || 0}
+        </span>
+
+        <span class="label">
+          ตรวจทั้งหมด
+        </span>
 
       </div>
 
-    `;
 
-    summaryBox.classList.remove(
-      "hidden"
-    );
+      <div class="summary-box good">
+
+        <span class="number">
+          ${summary.passed || 0}
+        </span>
+
+        <span class="label">
+          ปกติ
+        </span>
+
+      </div>
+
+
+      <div class="summary-box bad">
+
+        <span class="number">
+          ${summary.abnormal || 0}
+        </span>
+
+        <span class="label">
+          พบข้อบกพร่อง
+        </span>
+
+      </div>
+
+
+      <div class="summary-box bad">
+
+        <span class="number">
+          ${summary.defects || 0}
+        </span>
+
+        <span class="label">
+          ข้อบกพร่อง
+        </span>
+
+      </div>
+
+
+      <div class="summary-box">
+
+        <span class="number">
+          ${summary.vehicles || 0}
+        </span>
+
+        <span class="label">
+          รถที่ตรวจ
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================
+         3 คันงานแก้ไฟ
+    ======================= -->
+
+    <div class="report-section-title">
+
+      ⚡ รถงานแก้กระแสไฟฟ้าขัดข้อง
+      — สรุปตามกะ
+
+    </div>
+
+
+    <div style="overflow-x:auto;">
+
+      <table class="report-table">
+
+        <thead>
+
+          <tr>
+
+            <th>ทะเบียน</th>
+
+            <th>กะ 1</th>
+
+            <th>กะ 2</th>
+
+            <th>กะ 3</th>
+
+            <th>รวม</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            repairSummary.length
+
+            ? repairSummary.map(
+                item => {
+
+                  const missing =
+                    [];
+
+                  if (
+                    item.shift1 === 0
+                  ) {
+                    missing.push(
+                      "กะ 1"
+                    );
+                  }
+
+                  if (
+                    item.shift2 === 0
+                  ) {
+                    missing.push(
+                      "กะ 2"
+                    );
+                  }
+
+                  if (
+                    item.shift3 === 0
+                  ) {
+                    missing.push(
+                      "กะ 3"
+                    );
+                  }
+
+                  return `
+
+                    <tr>
+
+                      <td>
+                        ${escapeHtml(
+                          item.plate
+                        )}
+                      </td>
+
+                      <td class="${
+                        item.shift1
+                        ? "report-ok"
+                        : "report-warning"
+                      }">
+
+                        ${item.shift1}
+
+                      </td>
+
+                      <td class="${
+                        item.shift2
+                        ? "report-ok"
+                        : "report-warning"
+                      }">
+
+                        ${item.shift2}
+
+                      </td>
+
+                      <td class="${
+                        item.shift3
+                        ? "report-ok"
+                        : "report-warning"
+                      }">
+
+                        ${item.shift3}
+
+                      </td>
+
+                      <td>
+
+                        ${
+                          item.total
+                        }
+
+                      </td>
+
+                    </tr>
+
+                    ${
+                      missing.length
+                      ? `
+                        <tr>
+
+                          <td
+                            colspan="5"
+                            class="report-warning">
+
+                            ⚠️ ยังไม่มีข้อมูล
+                            ${missing.join(", ")}
+
+                          </td>
+
+                        </tr>
+                      `
+                      : ""
+                    }
+
+                  `;
+
+                }
+              ).join("")
+
+            : `
+
+              <tr>
+
+                <td colspan="5">
+
+                  ไม่มีข้อมูล
+
+                </td>
+
+              </tr>
+
+            `
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ======================
+         รถทุกคัน
+    ======================= -->
+
+    <div class="report-section-title">
+
+      🚗 สรุปตามทะเบียนรถ
+
+    </div>
+
+
+    <div style="overflow-x:auto;">
+
+      <table class="report-table">
+
+        <thead>
+
+          <tr>
+
+            <th>ทะเบียน</th>
+
+            <th>ตรวจ</th>
+
+            <th>ปกติ</th>
+
+            <th>ไม่ผ่าน</th>
+
+            <th>ข้อบกพร่อง</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${
+            vehicles.length
+
+            ? vehicles.map(
+                item => `
+
+                  <tr>
+
+                    <td>
+                      ${escapeHtml(
+                        item.plate
+                      )}
+                    </td>
+
+                    <td>
+                      ${item.total}
+                    </td>
+
+                    <td
+                      class="report-ok">
+
+                      ${item.passed}
+
+                    </td>
+
+                    <td
+                      class="${
+                        item.abnormal
+                        ? "report-bad"
+                        : ""
+                      }">
+
+                      ${item.abnormal}
+
+                    </td>
+
+                    <td
+                      class="${
+                        item.defects
+                        ? "report-bad"
+                        : ""
+                      }">
+
+                      ${item.defects}
+
+                    </td>
+
+                  </tr>
+
+                `
+              ).join("")
+
+            : `
+
+              <tr>
+
+                <td colspan="5">
+                  ไม่มีข้อมูล
+                </td>
+
+              </tr>
+
+            `
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ======================
+         ข้อผิดพลาดที่พบบ่อย
+    ======================= -->
+
+    <div class="report-section-title">
+
+      ⚠️ รายการที่พบข้อบกพร่องบ่อยที่สุด
+
+    </div>
+
+
+    <div>
+
+      ${
+        topDefects.length
+
+        ? topDefects.map(
+            (item,index) => `
+
+              <div
+                style="
+                  display:flex;
+                  justify-content:space-between;
+                  gap:10px;
+                  padding:8px 0;
+                  border-bottom:1px solid #eee;
+                  font-size:13px;
+                ">
+
+                <span>
+
+                  ${index + 1}.
+                  ${escapeHtml(
+                    item.name
+                  )}
+
+                </span>
+
+                <strong
+                  class="report-bad">
+
+                  ${item.count} ครั้ง
+
+                </strong>
+
+              </div>
+
+            `
+          ).join("")
+
+        : `
+
+          <div
+            style="
+              color:#777;
+              font-size:13px;
+            ">
+
+            เดือนนี้ยังไม่พบข้อบกพร่อง
+
+          </div>
+
+        `
+      }
+
+    </div>
+
+  </div>
+
+`;
+
+summaryBox.classList.remove(
+  "hidden"
+);
 
 
     if (!rows.length) {
