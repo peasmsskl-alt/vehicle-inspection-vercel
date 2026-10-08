@@ -46,12 +46,12 @@ export default async function handler(req, res) {
         const rowPlate =
           String(row[2] || '').trim();
 
-        if (
-          plate &&
-          rowPlate !== plate
-        ) {
-          return false;
-        }
+if (
+  plate &&
+  !rowPlate.includes(plate)
+) {
+  return false;
+}
 
         if (
           date &&
